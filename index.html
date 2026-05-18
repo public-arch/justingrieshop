@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Justin Grieshop — Builder of Systems That Amplify Humanity</title>
+<meta name="description" content="The future belongs to those who build it. I build systems that amplify the best of humanity with AI." />
+<meta property="og:title" content="Justin Grieshop" />
+<meta property="og:description" content="The future belongs to those who build it. I build systems that amplify the best of humanity with AI." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+Pro:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --gold: #e4bb7c;
+    --gold-bright: #f0d99c;
+    --navy-dark: #1a1a2e;
+    --navy-mid: #16213e;
+    --navy-light: #0f3460;
+    --bg: #0d1117;
+    --text: #f5f5f5;
+    --text-muted: rgba(255,255,255,0.6);
+    --text-faint: rgba(255,255,255,0.35);
+    --border: rgba(228,187,124,0.15);
+    --border-accent: rgba(228,187,124,0.3);
+    --card-bg: rgba(255,255,255,0.02);
+    --card-accent-bg: rgba(228,187,124,0.05);
+    --certified-bg: rgba(46, 160, 67, 0.12);
+    --certified-fg: #56d364;
+    --certified-border: rgba(46, 160, 67, 0.25);
+    --domain-bg: rgba(228,187,124,0.08);
+    --domain-fg: #e4bb7c;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Source Serif Pro', Georgia, serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+    --glow-gold: 0 0 20px rgba(228, 187, 124, 0.2);
+    --glow-gold-strong: 0 0 32px rgba(228, 187, 124, 0.3);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; padding: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(15, 52, 96, 0.45) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(22, 33, 62, 0.55) 0%, transparent 60%),
+      radial-gradient(circle at 50% 30%, rgba(228, 187, 124, 0.04) 0%, transparent 70%);
+  }
+  ::selection { background-color: var(--gold); color: var(--bg); }
+  ::-moz-selection { background-color: var(--gold); color: var(--bg); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(228,187,124,0.4); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+  * { scrollbar-color: rgba(228,187,124,0.4) var(--bg); scrollbar-width: thin; }
+
+  a { color: var(--gold); text-decoration: none; transition: color 0.2s ease; }
+  a:hover { color: var(--gold-bright); }
+
+  /* TOP BAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13, 17, 23, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
+    max-width: 1280px; margin: 0 auto;
+    padding: 20px 32px;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 24px;
+  }
+  .brand {
+    font-family: var(--font-serif);
+    font-size: 24px; color: var(--gold);
+    font-weight: 500; letter-spacing: 0.01em;
+    cursor: pointer;
+  }
+  .brand:hover { color: var(--gold-bright); }
+  .nav-tabs { display: flex; gap: 4px; align-items: center; }
+  .nav-tab {
+    font-family: var(--font-body);
+    font-size: 15px; color: var(--text-muted);
+    padding: 10px 18px; border: none;
+    background: transparent; cursor: pointer;
+    position: relative;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  .nav-tab:hover { color: var(--text); background: rgba(228,187,124,0.04); }
+  .nav-tab.active { color: var(--gold); background: rgba(228,187,124,0.06); }
+  .nav-tab.active::after {
+    content: "";
+    position: absolute; left: 18px; right: 18px; bottom: 4px;
+    height: 2px; background: var(--gold);
+  }
+  .topbar-github {
+    color: var(--text-muted); font-size: 14px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .topbar-github:hover { color: var(--gold); }
+
+  /* LAYOUT */
+  main {
+    max-width: 1280px; margin: 0 auto;
+    padding: 64px 32px 120px; position: relative; z-index: 1;
+  }
+  .page { display: none; }
+  .page.active { display: block; animation: fadeUp 0.5s ease both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* HERO */
+  .hero { padding: 32px 0 24px; max-width: 980px; }
+  .gauntlet {
+    font-family: var(--font-mono);
+    font-size: 13px; letter-spacing: 0.22em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex; align-items: center;
+    flex-wrap: wrap; gap: 14px;
+  }
+  .gauntlet span { white-space: nowrap; }
+  .gauntlet .dot { color: var(--border-accent); }
+  .hero-thesis {
+    font-family: var(--font-serif);
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 400; line-height: 1.04;
+    letter-spacing: -0.02em; color: var(--text);
+    margin: 0 0 32px;
+  }
+  .hero-thesis em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: 22px; line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 720px; margin: 0 0 56px;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 600; }
+
+  /* STAT BLOCK */
+  .stat-block {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin: 56px 0 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat {
+    padding: 32px 24px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-value {
+    font-family: var(--font-serif);
+    font-size: 40px; color: var(--gold);
+    font-weight: 400; line-height: 1;
+    margin-bottom: 12px; letter-spacing: 0.01em;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.22em;
+    color: var(--text-muted); text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  /* SECTION HEAD */
+  .section-head {
+    margin: 96px 0 32px;
+    display: flex; align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px; gap: 24px; flex-wrap: wrap;
+  }
+  .section-head h2 {
+    font-family: var(--font-serif);
+    font-size: 40px; font-weight: 400;
+    color: var(--text); margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .section-head .meta {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.18em;
+    color: var(--text-muted); text-transform: uppercase;
+  }
+
+  /* INSTRUMENT */
+  .instrument {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 40px; margin: 32px 0;
+    position: relative;
+  }
+  .instrument::before {
+    content: "INSTRUMENT · 01";
+    position: absolute; top: -10px; left: 24px;
+    background: var(--bg); padding: 0 12px;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.22em;
+    color: var(--gold);
+  }
+  .instrument-head {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 24px;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .instrument-title {
+    font-family: var(--font-serif);
+    font-size: 28px; color: var(--text);
+    margin: 0; font-weight: 400;
+  }
+  .instrument-sub {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.12em;
+    color: var(--text-muted); text-transform: uppercase;
+    text-align: right;
+  }
+  .instrument-controls {
+    display: flex; flex-wrap: wrap;
+    gap: 8px; margin-bottom: 20px;
+  }
+  .ctrl-label {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.22em;
+    color: var(--text-muted); text-transform: uppercase;
+    margin-right: 12px; align-self: center;
+  }
+  .ctrl-btn {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: transparent; color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 8px 14px; cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .ctrl-btn:hover { border-color: var(--border-accent); color: var(--text); }
+  .ctrl-btn.active {
+    background: rgba(228,187,124,0.1);
+    color: var(--gold); border-color: var(--gold);
+  }
+  .grid-wrap {
+    overflow-x: auto; margin: 16px -8px 0;
+    padding: 0 8px 8px;
+  }
+  .grid-table {
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 13px; width: 100%;
+    min-width: 560px;
+  }
+  .grid-table th, .grid-table td {
+    padding: 8px 6px; text-align: center;
+    border: 1px solid rgba(228,187,124,0.06);
+    transition: background 0.15s ease;
+    color: var(--text);
+  }
+  .grid-table th {
+    color: var(--gold); font-weight: 400;
+    font-size: 12px; letter-spacing: 0.06em;
+    background: rgba(228,187,124,0.03);
+  }
+  .grid-table tbody td:first-child {
+    color: var(--gold);
+    background: rgba(228,187,124,0.04);
+  }
+  .grid-table td.attractor {
+    background: rgba(15, 52, 96, 0.5);
+    color: var(--gold-bright);
+  }
+  .grid-table td.fixed-point {
+    background: rgba(228, 187, 124, 0.22);
+    color: var(--gold-bright);
+    font-weight: 600;
+  }
+  .instrument-caption {
+    margin-top: 16px; font-family: var(--font-body);
+    font-size: 14px; color: var(--text-muted);
+    line-height: 1.65; font-style: italic;
+  }
+  .instrument-caption .accent { color: var(--gold); font-style: normal; }
+
+  /* LANES */
+  .lanes {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); margin: 32px 0;
+  }
+  .lane {
+    background: var(--bg); padding: 36px 28px;
+    cursor: pointer; transition: background 0.2s ease;
+    position: relative;
+    display: flex; flex-direction: column; gap: 14px;
+    text-align: left; border: none; color: var(--text);
+    font-family: inherit;
+  }
+  .lane:hover { background: rgba(228,187,124,0.025); }
+  .lane:hover .lane-arrow { transform: translateX(4px); color: var(--gold); }
+  .lane-tag {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.22em;
+    color: var(--gold); text-transform: uppercase;
+  }
+  .lane-title {
+    font-family: var(--font-serif);
+    font-size: 32px; color: var(--text);
+    margin: 0; font-weight: 400;
+    line-height: 1.1; letter-spacing: -0.01em;
+  }
+  .lane-title em { color: var(--gold); font-style: italic; }
+  .lane-desc {
+    font-family: var(--font-body);
+    font-size: 15px; color: var(--text-muted);
+    line-height: 1.6; flex: 1;
+  }
+  .lane-arrow {
+    font-family: var(--font-mono);
+    font-size: 13px; color: var(--text-muted);
+    letter-spacing: 0.1em;
+    transition: transform 0.2s ease, color 0.2s ease;
+    margin-top: 4px;
+  }
+
+  /* FEED */
+  .feed { margin-top: 16px; }
+  .feed-item {
+    display: grid; grid-template-columns: 130px 130px 1fr 100px;
+    gap: 24px; padding: 22px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .feed-item:last-child { border-bottom: none; }
+  .feed-date {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .feed-kind {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--gold);
+    letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .feed-title {
+    font-family: var(--font-body);
+    font-size: 16px; color: var(--text); line-height: 1.5;
+  }
+  .feed-title a { color: var(--text); border-bottom: 1px solid var(--border-accent); }
+  .feed-title a:hover { color: var(--gold); }
+  .feed-link {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.12em;
+    color: var(--gold); text-transform: uppercase;
+    text-align: right;
+  }
+
+  /* PAGE STD */
+  .page-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.22em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 400; color: var(--text);
+    margin: 0 0 16px; line-height: 1.05;
+    letter-spacing: -0.015em;
+  }
+  .page-title em { color: var(--gold); font-style: italic; }
+  .page-lede {
+    font-family: var(--font-body);
+    font-size: 19px; line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 720px; margin: 0 0 56px;
+  }
+  .longform {
+    max-width: 720px;
+    font-size: 17px; line-height: 1.75;
+    color: rgba(255,255,255,0.78);
+  }
+  .longform p { margin: 0 0 1.3em; }
+  .longform em { color: var(--gold); font-style: italic; }
+
+  /* CARD GRID */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 24px; margin: 32px 0;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 28px;
+    display: flex; flex-direction: column; gap: 16px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    position: relative;
+  }
+  .card:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+  }
+  .card-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 12px; padding: 4px 10px;
+    border-radius: 2px; letter-spacing: 0.04em;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .tag.certified {
+    background: var(--certified-bg);
+    color: var(--certified-fg);
+    border: 1px solid var(--certified-border);
+  }
+  .tag.domain {
+    background: var(--domain-bg);
+    color: var(--domain-fg);
+    border: 1px solid var(--border-accent);
+  }
+  .tag.flagship {
+    background: rgba(46, 160, 67, 0.12);
+    color: var(--certified-fg);
+    border: 1px solid var(--certified-border);
+  }
+  .card-title {
+    font-family: var(--font-serif);
+    font-size: 26px; color: var(--text);
+    margin: 0; font-weight: 400; line-height: 1.2;
+  }
+  .card-desc {
+    font-family: var(--font-body);
+    font-size: 15px; color: var(--text-muted);
+    line-height: 1.6; flex: 1;
+  }
+  .card-foot {
+    display: flex; justify-content: space-between;
+    align-items: center; padding-top: 12px;
+    border-top: 1px solid var(--border);
+    gap: 12px; flex-wrap: wrap;
+  }
+  .card-meta {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.12em;
+  }
+  .card-link {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--gold);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  /* BOOK */
+  .book-hero {
+    display: grid; grid-template-columns: 1fr 1.3fr;
+    gap: 56px; align-items: center;
+    margin: 32px 0 64px;
+  }
+  .book-cover-link {
+    display: block;
+    line-height: 0;
+    border: none;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.6),
+      0 0 40px rgba(228,187,124,0.12);
+    background: #f4ede0;
+    overflow: hidden;
+  }
+  .book-cover-link:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 28px 80px rgba(0,0,0,0.7),
+      0 0 60px rgba(228,187,124,0.22);
+  }
+  .book-cover-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1015 / 1339;
+    object-fit: cover;
+  }
+  .book-info h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.05; margin: 0 0 16px;
+    color: var(--text); font-weight: 400;
+  }
+  .book-info h2 em { color: var(--gold); font-style: italic; }
+  .book-info .subtitle {
+    font-family: var(--font-body);
+    font-size: 18px; color: var(--text-muted);
+    font-style: italic; margin-bottom: 28px;
+  }
+  .book-info .description {
+    font-size: 16px; color: rgba(255,255,255,0.78);
+    line-height: 1.7; margin-bottom: 32px;
+  }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cta {
+    font-family: var(--font-mono);
+    font-size: 13px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 14px 26px;
+    border: 1px solid var(--border-accent);
+    background: transparent; color: var(--gold);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .cta:hover {
+    background: var(--gold); color: var(--bg);
+    box-shadow: var(--glow-gold);
+  }
+  .cta.primary {
+    background: var(--gold); color: var(--bg);
+    border-color: var(--gold);
+  }
+  .cta.primary:hover {
+    background: var(--gold-bright);
+    border-color: var(--gold-bright);
+    box-shadow: var(--glow-gold-strong);
+  }
+
+  /* TOC */
+  .toc-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0 48px; margin: 32px 0;
+  }
+  .toc-item {
+    display: grid; grid-template-columns: 100px 1fr;
+    gap: 20px; padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .toc-num {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--gold);
+    letter-spacing: 0.22em; text-transform: uppercase;
+  }
+  .toc-title {
+    font-family: var(--font-serif);
+    font-size: 19px; color: var(--text);
+    line-height: 1.3;
+  }
+  .toc-title em { color: var(--gold); font-style: italic; }
+
+  /* TIMELINE (Leadership) */
+  .timeline-item {
+    display: grid; grid-template-columns: 180px 1fr;
+    gap: 40px; padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .timeline-meta {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    line-height: 1.8;
+  }
+  .timeline-meta strong {
+    color: var(--gold); display: block;
+    margin-bottom: 6px;
+    font-weight: 500; letter-spacing: 0.18em;
+  }
+  .timeline-content h3 {
+    font-family: var(--font-serif);
+    font-size: 30px; margin: 0 0 12px;
+    font-weight: 400; color: var(--text);
+    line-height: 1.2;
+  }
+  .timeline-content h3 em { color: var(--gold); font-style: italic; }
+  .timeline-content p {
+    font-size: 16px; color: rgba(255,255,255,0.78);
+    line-height: 1.7; margin: 0 0 14px;
+  }
+  blockquote {
+    border-left: 2px solid var(--gold);
+    padding: 8px 0 8px 24px; margin: 20px 0;
+    font-style: italic;
+    color: rgba(255,255,255,0.82);
+    font-size: 16px;
+  }
+  blockquote cite {
+    display: block; font-family: var(--font-mono);
+    font-style: normal; font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.18em; text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 48px; margin: 32px 0;
+  }
+  .about-block h3 {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold);
+    margin: 0 0 16px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .about-block ul { list-style: none; padding: 0; margin: 0; }
+  .about-block li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px; color: var(--text);
+  }
+  .about-block li:last-child { border-bottom: none; }
+  .about-block li small {
+    display: block; color: var(--text-muted);
+    font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-top: 4px;
+    font-family: var(--font-mono);
+  }
+
+  /* NOW */
+  .now-card {
+    background: var(--card-accent-bg);
+    border: 1px solid var(--border-accent);
+    padding: 48px; max-width: 760px;
+    margin: 32px 0; position: relative;
+    box-shadow: var(--glow-gold);
+  }
+  .now-card::before {
+    content: "// NOW";
+    position: absolute; top: -10px; left: 24px;
+    background: var(--bg); padding: 0 12px;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.22em;
+    color: var(--gold);
+  }
+  .now-card p {
+    font-family: var(--font-body);
+    font-size: 18px; line-height: 1.7;
+    color: var(--text); margin: 0 0 18px;
+  }
+  .now-card p:last-child { margin-bottom: 0; }
+  .now-card em { color: var(--gold); font-style: italic; }
+  .now-stamp {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.22em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 24px !important;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 96px;
+    padding: 56px 32px 48px;
+    position: relative; z-index: 1;
+  }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+  }
+  .footer-brand {
+    font-family: var(--font-serif);
+    font-size: 28px; color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .footer-tag {
+    font-family: var(--font-body);
+    font-size: 14px; color: var(--text-muted);
+    max-width: 32ch; line-height: 1.6;
+  }
+  .footer-section h4 {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold);
+    margin: 0 0 16px; font-weight: 500;
+  }
+  .footer-section a {
+    display: block; color: var(--text-muted);
+    font-size: 14px; margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .footer-section a:hover { color: var(--gold); }
+  .footer-mark {
+    max-width: 1280px; margin: 48px auto 0;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .colophon-numerals {
+    font-family: var(--font-mono);
+    font-size: 13px; color: var(--gold);
+    letter-spacing: 0.25em;
+  }
+  .colophon-attr {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--text-muted); text-transform: uppercase;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    main { padding: 40px 20px 80px; }
+    .topbar-inner { padding: 16px 20px; gap: 12px; }
+    .brand { font-size: 19px; }
+    .nav-tab { padding: 8px 11px; font-size: 13px; }
+    .stat-block { grid-template-columns: repeat(2, 1fr); }
+    .stat { border-bottom: 1px solid var(--border); }
+    .stat:nth-child(odd) { border-right: 1px solid var(--border); }
+    .stat:nth-child(even) { border-right: none; }
+    .stat:nth-last-child(-n+2) { border-bottom: none; }
+    .lanes { grid-template-columns: 1fr; }
+    .feed-item { grid-template-columns: 100px 1fr; gap: 12px; }
+    .feed-item .feed-kind, .feed-item .feed-link { display: none; }
+    .book-hero { grid-template-columns: 1fr; gap: 32px; }
+    .book-cover-link { max-width: 280px; margin: 0 auto; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .timeline-item { grid-template-columns: 1fr; gap: 14px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+    .section-head h2 { font-size: 30px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .instrument-sub { text-align: left; }
+  }
+  @media (max-width: 600px) {
+    .nav-tabs { gap: 0; }
+    .nav-tab { padding: 8px 7px; font-size: 12px; }
+    .topbar-github span { display: none; }
+    .hero-thesis { font-size: 40px; }
+    .hero-sub { font-size: 17px; }
+    .stat-value { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" data-nav="home">Justin Grieshop</a>
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-nav="home">Home</button>
+      <button class="nav-tab" data-nav="research">Research</button>
+      <button class="nav-tab" data-nav="book">Book</button>
+      <button class="nav-tab" data-nav="leadership">Leadership</button>
+      <button class="nav-tab" data-nav="about">About</button>
+      <button class="nav-tab" data-nav="now">Now</button>
+    </nav>
+    <a class="topbar-github" href="https://github.com/public-arch" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span>public-arch</span>
+    </a>
+  </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section class="page active" data-page="home">
+
+  <div class="hero">
+    <div class="gauntlet">
+      <span>Human Leverage</span>
+      <span class="dot">·</span>
+      <span>First Principles</span>
+      <span class="dot">·</span>
+      <span>Compound Returns</span>
+    </div>
+
+    <h1 class="hero-thesis">
+      The future belongs to those who <em>build it.</em>
+    </h1>
+
+    <p class="hero-sub">
+      I build systems that <strong>amplify the best of humanity</strong> with AI — at enterprise scale, from first principles, and against the kind of adversarial scrutiny that separates the work that lasts from the work that doesn't.
+    </p>
+
+    <div class="stat-block">
+      <div class="stat">
+        <div class="stat-value">Published</div>
+        <div class="stat-label">Mathematician</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">Enterprise</div>
+        <div class="stat-label">AI Operator</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">Independent</div>
+        <div class="stat-label">Author</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">First</div>
+        <div class="stat-label">Principles Thinker</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTRUMENT -->
+  <div class="section-head">
+    <h2>An instrument, not a metaphor.</h2>
+    <span class="meta">— Live · Mod-N residue field</span>
+  </div>
+
+  <div class="instrument">
+    <div class="instrument-head">
+      <h3 class="instrument-title">Power residues on <em style="color: var(--gold); font-style:italic;">Z/NZ</em></h3>
+      <span class="instrument-sub">Choose a modulus.<br>Patterns are computed live.</span>
+    </div>
+
+    <div class="instrument-controls">
+      <span class="ctrl-label">Modulus</span>
+      <button class="ctrl-btn" data-mod="7">7</button>
+      <button class="ctrl-btn" data-mod="9">9</button>
+      <button class="ctrl-btn active" data-mod="10">10</button>
+      <button class="ctrl-btn" data-mod="12">12</button>
+      <button class="ctrl-btn" data-mod="13">13</button>
+      <button class="ctrl-btn" data-mod="17">17</button>
+    </div>
+
+    <div class="grid-wrap">
+      <table class="grid-table" id="grid"></table>
+    </div>
+
+    <p class="instrument-caption">
+      Each cell shows <span class="accent">aⁿ mod N</span>. Brighter cells are <span class="accent">fixed points</span> — values where raising the base lands back on the base. The shaded columns mark <span class="accent">attractor patterns</span> — recurrences the integers fall into without being told to. This is a fragment of the structure my research program — <a href="https://marithmetics.com" target="_blank">Marithmetics</a> — works from. Finite. Periodic. First-principles.
+    </p>
+  </div>
+
+  <!-- LANES -->
+  <div class="section-head">
+    <h2>The work, in three directions.</h2>
+    <span class="meta">— Same method · Different scales</span>
+  </div>
+
+  <div class="lanes">
+    <button class="lane" data-nav="research">
+      <span class="lane-tag">— 01 · Research</span>
+      <h3 class="lane-title">Foundations <em>that hold.</em></h3>
+      <p class="lane-desc">An independent program in finite, periodic arithmetic — resolving questions older than the modern academy by working from the structure the integers actually have, not the one we project onto them.</p>
+      <span class="lane-arrow">EXPLORE  →</span>
+    </button>
+
+    <button class="lane" data-nav="leadership">
+      <span class="lane-tag">— 02 · AI Leadership</span>
+      <h3 class="lane-title">Operator-grade <em>ROI.</em></h3>
+      <p class="lane-desc">Leading enterprise AI transformation across nine functional domains. The framework: find the friction, strip the noise, amplify the humans who are already doing the work. Returns compound because the foundation holds.</p>
+      <span class="lane-arrow">EXPLORE  →</span>
+    </button>
+
+    <button class="lane" data-nav="book">
+      <span class="lane-tag">— 03 · Author</span>
+      <h3 class="lane-title">Finite <em>Infinity.</em></h3>
+      <p class="lane-desc">Twenty-three small books on Plato's missing substrate. The general-reader entry point to the program — short enough to read in fifteen minutes, deep enough to keep returning to.</p>
+      <span class="lane-arrow">EXPLORE  →</span>
+    </button>
+  </div>
+
+  <!-- FEED -->
+  <div class="section-head">
+    <h2>Recent.</h2>
+    <span class="meta">— Reverse chronological · All work</span>
+  </div>
+
+  <div class="feed">
+    <div class="feed-item">
+      <span class="feed-date">May 2026</span>
+      <span class="feed-kind">Book</span>
+      <span class="feed-title"><a href="book/00_finite_infinity.html" target="_blank" rel="noopener"><em style="color:var(--gold);font-style:italic;">Finite Infinity</em></a> — the cover, the table of contents, and <a href="book/01_infinity.html" target="_blank" rel="noopener">Book One</a> are now readable.</span>
+      <span class="feed-link"><a href="book/00_finite_infinity.html" target="_blank" rel="noopener">Open →</a></span>
+    </div>
+    <div class="feed-item">
+      <span class="feed-date">Feb 2026</span>
+      <span class="feed-kind">Preprint</span>
+      <span class="feed-title"><a href="https://arxiv.org/abs/2602.20185" target="_blank">On the Failure of Step-Response Tests to Certify Admissibility of Spectral Averaging Operators</a></span>
+      <span class="feed-link">arXiv →</span>
+    </div>
+    <div class="feed-item">
+      <span class="feed-date">Jan 2026</span>
+      <span class="feed-kind">Briefing</span>
+      <span class="feed-title"><a href="https://www.technologyexecutivesclub.com/blog/ai-to-roi-your-friction-is-your-opportunity-with-justin-grieshop-cbts" target="_blank">AI to ROI: Your Friction Is Your Opportunity</a> — Technology Executives Club</span>
+      <span class="feed-link">Watch →</span>
+    </div>
+    <div class="feed-item">
+      <span class="feed-date">Nov 2025</span>
+      <span class="feed-kind">Preprint</span>
+      <span class="feed-title"><a href="https://arxiv.org/abs/2512.03085" target="_blank">Explicit constants for Fejer-type smoothing on finite cyclic groups</a></span>
+      <span class="feed-link">arXiv →</span>
+    </div>
+    <div class="feed-item">
+      <span class="feed-date">Nov 2025</span>
+      <span class="feed-kind">Talk</span>
+      <span class="feed-title">AI in the Enterprise Summit — featured speaker, Chicago Technology Executives Club</span>
+      <span class="feed-link">Listing →</span>
+    </div>
+    <div class="feed-item">
+      <span class="feed-date">Jun 2025</span>
+      <span class="feed-kind">Talks</span>
+      <span class="feed-title">Cincy AI Week — three sessions across three days, Union Hall, Cincinnati</span>
+      <span class="feed-link">Listing →</span>
+    </div>
+    <div class="feed-item">
+      <span class="feed-date">Apr 2025</span>
+      <span class="feed-kind">Press</span>
+      <span class="feed-title">Named press quote on AI adoption, change management, and measurable ROI</span>
+      <span class="feed-link">Release →</span>
+    </div>
+    <div class="feed-item">
+      <span class="feed-date">May 2024</span>
+      <span class="feed-kind">Essay</span>
+      <span class="feed-title"><a href="https://www.onx.com/blog/ai-infrastructure-modern-data-management-for-insight-driven-strategy" target="_blank">AI infrastructure: modern data management for insight-driven strategy</a></span>
+      <span class="feed-link">Read →</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- RESEARCH -->
+<section class="page" data-page="research">
+  <div class="page-eyebrow">— 01 · Research</div>
+  <h1 class="page-title">Foundations <em>that hold.</em></h1>
+  <p class="page-lede">An independent program in finite, periodic arithmetic. The thesis: the integers carry more native structure than mainstream mathematics treats them as carrying. The continuum is a derived object built over a finite substrate. Most barriers in modern math are artifacts of method — not properties of the underlying objects.</p>
+
+  <div class="longform">
+    <p>The program is called <em>Marithmetics</em>. It has its own canonical site at <a href="https://marithmetics.com" target="_blank">marithmetics.com</a>, where every claim is paired with a deterministic demonstration, a published paper, and a public attack surface.</p>
+    <p>The work is conservative on purpose. Every claim has to compress to a finite, checkable object before it leaves the workshop. Every demo is reproducible. Every paper has a published method of falsification. Audit-grade, applied to mathematics instead of accounting.</p>
+  </div>
+
+  <div class="section-head">
+    <h2>Selected artifacts.</h2>
+    <span class="meta">— Public · Certifiable · Falsifiable</span>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-tags">
+        <span class="tag certified">✓ certified</span>
+        <span class="tag domain">arXiv</span>
+      </div>
+      <h3 class="card-title">Step-Response Admissibility</h3>
+      <p class="card-desc">A sharp characterization of when periodic-convolution smoothers preserve bounded ranges on Z/NZ, with constructive worst-case witnesses for the cases where common diagnostics give a wrong answer.</p>
+      <div class="card-foot">
+        <span class="card-meta">FEB 2026</span>
+        <a class="card-link" href="https://arxiv.org/abs/2602.20185" target="_blank">arXiv:2602.20185 →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-tags">
+        <span class="tag certified">✓ certified</span>
+        <span class="tag domain">arXiv</span>
+      </div>
+      <h3 class="card-title">Fejer-Type Smoothing</h3>
+      <p class="card-desc">A self-contained reference: explicit ℓ¹ and ℓ² norms for a Fejer-type kernel on Z/NZ, uniform bounds in N, and a smoothed discrepancy estimate for downstream quantitative work.</p>
+      <div class="card-foot">
+        <span class="card-meta">NOV 2025</span>
+        <a class="card-link" href="https://arxiv.org/abs/2512.03085" target="_blank">arXiv:2512.03085 →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-tags">
+        <span class="tag flagship">✓ Flagship</span>
+        <span class="tag domain">Program</span>
+      </div>
+      <h3 class="card-title">Marithmetics</h3>
+      <p class="card-desc">The full canonical site — 28 deterministic demos, 16 papers, 3 published attack vectors, zero free parameters. Every prediction is a dimensionless ratio.</p>
+      <div class="card-foot">
+        <span class="card-meta">2023 — PRESENT</span>
+        <a class="card-link" href="https://marithmetics.com" target="_blank">marithmetics.com →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-tags">
+        <span class="tag flagship">✓ Flagship</span>
+        <span class="tag domain">Book</span>
+      </div>
+      <h3 class="card-title">Finite Infinity</h3>
+      <p class="card-desc">Twenty-three small books on Plato's missing substrate. The general-reader entry point — six or seven pages per book, fifteen minutes to read, the work of many years.</p>
+      <div class="card-foot">
+        <span class="card-meta">2026</span>
+        <a class="card-link" data-nav="book">Read more →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-tags">
+        <span class="tag certified">✓ certified</span>
+        <span class="tag domain">Repository</span>
+      </div>
+      <h3 class="card-title">public-arch / Marithmetics</h3>
+      <p class="card-desc">The companion repository. Computational demonstrations, derivation notebooks, every result hyperlinked to its source. The receipts.</p>
+      <div class="card-foot">
+        <span class="card-meta">PUBLIC</span>
+        <a class="card-link" href="https://github.com/public-arch/Marithmetics" target="_blank">github.com →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section class="page" data-page="book">
+  <div class="page-eyebrow">— 03 · Author</div>
+
+  <div class="book-hero">
+    <div>
+      <a href="book/00_finite_infinity.html" target="_blank" rel="noopener" class="book-cover-link" aria-label="Open the full cover and front matter">
+        <img src="book/cover.png" alt="Finite Infinity — a collected volume. Twenty-three small books on Plato's missing substrate. By Justin Grieshop." class="book-cover-img" />
+      </a>
+    </div>
+
+    <div class="book-info">
+      <h2>Finite <em>Infinity.</em></h2>
+      <div class="subtitle">Twenty-three small books on Plato's missing substrate.</div>
+      <div class="description">
+        <p>"What follows is a series of small books. Each one is short — six or seven pages — and each one does one thing. They are meant to be read in order, but they do not require it. You can begin anywhere."</p>
+        <p>Each book reads in fifteen minutes. The whole volume is the work of many years. The time difference is not an accident.</p>
+      </div>
+      <div class="cta-row">
+        <a href="book/00_finite_infinity.html" class="cta primary" target="_blank" rel="noopener">Open the volume</a>
+        <a href="book/01_infinity.html" class="cta" target="_blank" rel="noopener">Read book one</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Table of contents.</h2>
+    <span class="meta">— 23 small books · ~15 minutes each</span>
+  </div>
+
+  <div class="toc-grid">
+    <div>
+      <a href="book/01_infinity.html" target="_blank" rel="noopener" style="border:none;display:block;">
+        <div class="toc-item"><span class="toc-num">One</span><span class="toc-title">Most of what you call <em>infinity</em> isn't.</span></div>
+      </a>
+      <div class="toc-item"><span class="toc-num">Two</span><span class="toc-title">The substrate beneath <em>counting.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Three</span><span class="toc-title">Each one is <em>three.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Four</span><span class="toc-title">The one <em>that was left.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Five</span><span class="toc-title">Why the <em>integers</em> already know.</span></div>
+      <div class="toc-item"><span class="toc-num">Six</span><span class="toc-title">A ladder of <em>primorials.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Seven</span><span class="toc-title">Cells, not <em>densities.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Eight</span><span class="toc-title">What a tile <em>cannot reach.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Nine</span><span class="toc-title">The continuum, <em>after.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Ten</span><span class="toc-title">Plato's missing <em>substrate.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Eleven</span><span class="toc-title">Why physics <em>reads it off.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Twelve</span><span class="toc-title">A constant, <em>derived.</em></span></div>
+    </div>
+    <div>
+      <div class="toc-item"><span class="toc-num">Thirteen</span><span class="toc-title">Three generations, <em>not chosen.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Fourteen</span><span class="toc-title">What the <em>numbers</em> tile.</span></div>
+      <div class="toc-item"><span class="toc-num">Fifteen</span><span class="toc-title">A clock that is <em>algebraic.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Sixteen</span><span class="toc-title">When a barrier is <em>an artifact.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Seventeen</span><span class="toc-title">The shape of <em>closure.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Eighteen</span><span class="toc-title">Why <em>finite</em> is enough.</span></div>
+      <div class="toc-item"><span class="toc-num">Nineteen</span><span class="toc-title">A field, <em>completed.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Twenty</span><span class="toc-title">The audit, <em>and what survives.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Twenty-one</span><span class="toc-title">What is still <em>open.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Twenty-two</span><span class="toc-title">How a small book <em>finishes.</em></span></div>
+      <div class="toc-item"><span class="toc-num">Twenty-three</span><span class="toc-title">The <em>conversation.</em></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section class="page" data-page="leadership">
+  <div class="page-eyebrow">— 02 · AI Leadership</div>
+  <h1 class="page-title">Operator-grade <em>ROI.</em></h1>
+  <p class="page-lede">AI fails when it's applied as substitution. It compounds when it's applied as leverage on what humans are already doing well. My framework: find the friction, strip the noise, amplify the people. The returns follow.</p>
+
+  <div class="timeline-item">
+    <div class="timeline-meta">
+      <strong>BRIEFING</strong>
+      Jan 2026<br>
+      On-demand<br>
+      Tech Exec Club
+    </div>
+    <div class="timeline-content">
+      <h3>AI to ROI: Your <em>friction</em> is your opportunity.</h3>
+      <p>A long-form leadership briefing with Alex Jarett at the Technology Executives Club. A repeatable framework for moving from AI experimentation to defensible business value — built for the senior executives who are done with hype and ready to deploy.</p>
+      <p><a href="https://www.technologyexecutivesclub.com/blog/ai-to-roi-your-friction-is-your-opportunity-with-justin-grieshop-cbts" target="_blank">Watch the briefing →</a></p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-meta">
+      <strong>TALK</strong>
+      Nov 2025<br>
+      Schaumburg, IL
+    </div>
+    <div class="timeline-content">
+      <h3>Leveraging AI for Business Results</h3>
+      <p>Featured speaker at the Chicago Technology Executives Club AI in the Enterprise Summit. A working framework for AI executives who actually have to deliver, not just announce.</p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-meta">
+      <strong>TALKS</strong>
+      Jun 2025<br>
+      Cincinnati, OH
+    </div>
+    <div class="timeline-content">
+      <h3>Cincy AI Week — three sessions</h3>
+      <p>Three sessions across three days at Union Hall during Cincinnati's inaugural AI Week. From "AI to ROI: Business First" to the operational realities of enterprise adoption.</p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-meta">
+      <strong>PRESS</strong>
+      Apr 2025<br>
+      Named quote
+    </div>
+    <div class="timeline-content">
+      <h3>AI accelerator portfolio launch</h3>
+      <blockquote>
+        Once an organization deploys AI into their environment, we can guide them through the organizational change management needed to ensure a successful return on their investment. When organizations license AI tools for their entire workforce but users fail to fully leverage them, they miss out on the transformative potential AI can deliver.
+        <cite>— Press release · April 2025</cite>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-meta">
+      <strong>ESSAY</strong>
+      May 2024<br>
+      OnX
+    </div>
+    <div class="timeline-content">
+      <h3>AI infrastructure: <em>modern data management</em> for insight-driven strategy.</h3>
+      <p>A grounded look at what AI actually requires from data infrastructure — and where executives most often skip the steps that determine whether the investment compounds or stalls.</p>
+      <p><a href="https://www.onx.com/blog/ai-infrastructure-modern-data-management-for-insight-driven-strategy" target="_blank">Read on OnX →</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="page" data-page="about">
+  <div class="page-eyebrow">— About</div>
+  <h1 class="page-title">A servant <em>operator.</em></h1>
+  <p class="page-lede">I lead AI &amp; Analytics for a large enterprise, run an independent research program, and wrote a book on what Plato called the missing substrate. The through-line is the same in every domain: strip the noise, build from the foundation, amplify the humans doing the work. The future belongs to those who build it.</p>
+
+  <div class="longform">
+    <p>The work looks scattered until you see the method. In the enterprise, that means leading transformation across nine functional domains — data engineering, applied AI, architecture, change management — with the discipline of an operator and the bearing of a servant leader. In research, it means treating mathematical objects as exact finite sets rather than statistical approximations, and pushing every claim to closure or rejection rather than to summary. In writing, it means showing rather than arguing — six or seven pages at a time, fifteen minutes per book, the work of many years.</p>
+    <p>I believe in <em>signal as a strategic asset.</em> In an era of noise, the operators who learn to extract it compound. The ones who can't, don't. AI is the single highest-leverage instrument for that extraction ever built — provided you use it on humans, not against them.</p>
+    <p>I live near Cincinnati. I read carefully. I think slowly on purpose.</p>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-block">
+      <h3>— Credentials</h3>
+      <ul>
+        <li>Harvard University<small>Graduate study</small></li>
+        <li>University of Cincinnati<small>Statistics &amp; economics</small></li>
+        <li>Senior Director · AI &amp; Analytics<small>Enterprise — current</small></li>
+        <li>Independent researcher<small>Marithmetics · MARI · DRPT</small></li>
+      </ul>
+    </div>
+
+    <div class="about-block">
+      <h3>— Recent talks</h3>
+      <ul>
+        <li>AI in the Enterprise Summit<small>Schaumburg · Nov 2025</small></li>
+        <li>Cincy AI Week — three sessions<small>Cincinnati · Jun 2025</small></li>
+        <li>Tech Talk · AI in Retail<small>Dec 2024 · with Wes Chaar</small></li>
+        <li>Capacity/Lucy — KM &amp; AI<small>Oct 2024 · with Scott Litman</small></li>
+      </ul>
+    </div>
+
+    <div class="about-block">
+      <h3>— Profiles</h3>
+      <ul>
+        <li><a href="https://www.linkedin.com/in/justin-grieshop-ab754065/" target="_blank">LinkedIn</a><small>Professional</small></li>
+        <li><a href="https://github.com/public-arch" target="_blank">GitHub · public-arch</a><small>Repositories</small></li>
+        <li><a href="https://arxiv.org/a/grieshop_j_1" target="_blank">arXiv</a><small>Preprints</small></li>
+        <li><a href="https://marithmetics.com" target="_blank">Marithmetics.com</a><small>Research program</small></li>
+      </ul>
+    </div>
+
+    <div class="about-block">
+      <h3>— Contact</h3>
+      <ul>
+        <li><a href="mailto:hello@justingrieshop.com">hello@justingrieshop.com</a><small>Collaboration · speaking · press</small></li>
+        <li><a href="mailto:research@justingrieshop.com">research@justingrieshop.com</a><small>Academic correspondence</small></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- NOW -->
+<section class="page" data-page="now">
+  <div class="page-eyebrow">— Now</div>
+  <h1 class="page-title">Currently <em>building.</em></h1>
+  <p class="page-lede">A short note, updated monthly, on what's in front of me.</p>
+
+  <div class="now-card">
+    <p class="now-stamp">— Updated · May 2026 —</p>
+    <p><em>Finite Infinity</em> is being mailed to a short list of academics and writers ahead of public release. The next two papers in the DRPT sequence are being prepared for arXiv — the layered architecture established before the projection result lands.</p>
+    <p>At the enterprise, my team and I are scaling a Claude rollout from pilot into governed deployment. The framework I keep returning to in those rooms is the one I gave at the Technology Executives Club — AI ROI lives in the friction, not in the roadmap. The work that compounds is the work that amplifies the people who are already there.</p>
+    <p>Reading less than usual. Writing more. Trying to do the next thing well rather than the next ten things at once.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Justin Grieshop</div>
+      <p class="footer-tag">Builder of systems that amplify the best of humanity with AI. Independent researcher. Author of <em style="color:var(--gold);font-style:italic;">Finite Infinity</em>.</p>
+    </div>
+    <div class="footer-section">
+      <h4>— Site</h4>
+      <a data-nav="research">Research</a>
+      <a data-nav="book">Book</a>
+      <a data-nav="leadership">Leadership</a>
+      <a data-nav="about">About</a>
+      <a data-nav="now">Now</a>
+    </div>
+    <div class="footer-section">
+      <h4>— Found at</h4>
+      <a href="https://marithmetics.com" target="_blank">Marithmetics</a>
+      <a href="https://github.com/public-arch" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/justin-grieshop-ab754065/" target="_blank">LinkedIn</a>
+      <a href="https://arxiv.org/a/grieshop_j_1" target="_blank">arXiv</a>
+    </div>
+    <div class="footer-section">
+      <h4>— Contact</h4>
+      <a href="mailto:hello@justingrieshop.com">hello@justingrieshop.com</a>
+      <a href="mailto:research@justingrieshop.com">research@justingrieshop.com</a>
+    </div>
+  </div>
+
+  <div class="footer-mark">
+    <span class="colophon-numerals">137 · 107 · 103</span>
+    <span class="colophon-attr">— Built with intent · 2026 —</span>
+  </div>
+</footer>
+
+<script>
+  const pages = ['home', 'research', 'book', 'leadership', 'about', 'now'];
+
+  function showPage(name) {
+    if (!pages.includes(name)) name = 'home';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    const page = document.querySelector(`[data-page="${name}"]`);
+    if (page) page.classList.add('active');
+    const tab = document.querySelector(`.nav-tab[data-nav="${name}"]`);
+    if (tab) tab.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    document.title = name === 'home'
+      ? 'Justin Grieshop — Builder of Systems That Amplify Humanity'
+      : 'Justin Grieshop — ' + name.charAt(0).toUpperCase() + name.slice(1);
+  }
+
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-nav]');
+    if (!link) return;
+    e.preventDefault();
+    const target = link.getAttribute('data-nav');
+    history.pushState({}, '', '#' + target);
+    showPage(target);
+  });
+
+  window.addEventListener('popstate', () => {
+    const hash = window.location.hash.replace('#', '') || 'home';
+    showPage(hash);
+  });
+
+  const initial = window.location.hash.replace('#', '') || 'home';
+  showPage(initial);
+
+  // Live mod-N power residue instrument
+  function renderGrid(N) {
+    const cols = Math.min(N, 13);
+    let html = '<thead><tr><th>Base</th>';
+    for (let p = 1; p <= cols; p++) html += `<th>^${p}</th>`;
+    html += '</tr></thead><tbody>';
+
+    const fixedPoints = new Set();
+    for (let a = 0; a < N; a++) {
+      if ((a * a) % N === a) fixedPoints.add(a);
+    }
+
+    for (let a = 1; a < N; a++) {
+      html += `<tr><td>${a}</td>`;
+      let val = 1;
+      for (let p = 1; p <= cols; p++) {
+        val = (val * a) % N;
+        const isReturnToBase = val === a && p > 1;
+        let cls = '';
+        if (isReturnToBase) cls = 'fixed-point';
+        else if (fixedPoints.has(val) && val !== 1 && val !== 0) cls = 'attractor';
+        html += `<td class="${cls}">${val}</td>`;
+      }
+      html += '</tr>';
+    }
+    html += '</tbody>';
+    document.getElementById('grid').innerHTML = html;
+  }
+
+  document.querySelectorAll('.ctrl-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid(parseInt(btn.dataset.mod, 10));
+    });
+  });
+
+  renderGrid(10);
+</script>
+
+</body>
+</html>

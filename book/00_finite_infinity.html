@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finite Infinity — Twenty-three small books on Plato's missing substrate</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #f6f1e8;
+  --bg-faint: #f1ebe0;
+  --ink: #2d2620;
+  --muted: #6b5d50;
+  --rust: #8f4428;
+  --rust-deep: #6d3420;
+  --gold: #c89a4a;
+  --soft: #e8ddc9;
+  --line: #d6c9b0;
+  --warm-home: #f0e6d0;
+  --tile-faint: #e5d9c1;
+  --tile-fainter: #ebe1ca;
+}
+
+/* ==========================================================================
+   PRINT MODE — BLEED-AWARE  (6x9 trim, 0.125in bleed = 6.25x9.25 page)
+   
+   The printer trims to 6x9. Cream bleeds past the trim line so the finished
+   book has cream ink to the cut edge (no white paper showing). Every page
+   of every book in the volume uses this rule — consistency across the
+   collected volume.
+   ========================================================================== */
+
+@media print {
+  @page {
+    size: 6.25in 9.25in;
+    margin: 0;
+  }
+  html, body {
+    background: #f6f1e8;
+    margin: 0;
+    padding: 0;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  .book {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+  .page {
+    width: 6.25in;
+    height: 9.25in;
+    min-height: 9.25in;
+    max-height: 9.25in;
+    padding: 0.75in 0.75in 0.75in 0.75in;
+    margin: 0;
+    background: #f6f1e8;
+    page-break-after: always;
+    break-after: page;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    overflow: hidden;
+    display: block;
+    box-sizing: border-box;
+  }
+  .page.cover {
+    text-align: center;
+    padding: 2.4in 0.75in 2in 0.75in;
+  }
+  .page:last-child { page-break-after: auto; }
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'EB Garamond', Georgia, serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.78;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.volume { max-width: 680px; margin: 0 auto; padding: 0 28px; }
+
+.page {
+  min-height: 100vh;
+  padding: 80px 0 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.page.center {
+  justify-content: center;
+  text-align: center;
+}
+
+/* ====================== COVER ====================== */
+
+.cover-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  margin: 0 -28px;
+}
+
+/* The substrate: the real 9x12 DRPT, tiled 3 across × 6 down, filling the
+   entire cover page as quiet background texture. The cover looks, from a
+   distance, like a cream page with a title. Up close, the page is made of
+   actual arithmetic — the digit in every cell is a true digital-root value
+   of n^k mod 9. Every row is one of the nine numbers in base ten. Every
+   column is one power. The tile repeats because that is what the tile does.
+
+   Opacity kept deliberately low so the title remains the focal reading.
+   Print fidelity test: at 10pt+ on cream-to-paper contrast ratio near 1.2:1,
+   the digits survive the POD ink pickup without smudging. */
+.cover-substrate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(36, 1fr);
+  grid-auto-rows: 1fr;
+  align-content: start;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', monospace;
+  color: #a09380;
+  opacity: 0.50;
+  user-select: none;
+  padding: 0;
+  line-height: 1;
+  -webkit-mask-image: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0.62) 100%);
+  mask-image: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0.62) 100%);
+}
+.cover-substrate .sub-c {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0;
+  aspect-ratio: 1;
+  opacity: 0.90;
+}
+.cover-substrate .sub-c:nth-child(3n+1)   { opacity: 0.78; }
+.cover-substrate .sub-c:nth-child(5n+2)   { opacity: 0.96; }
+.cover-substrate .sub-c:nth-child(7n+3)   { opacity: 0.84; }
+.cover-substrate .sub-c:nth-child(11n+4)  { opacity: 1.00; }
+.cover-substrate .sub-c:nth-child(13n+5)  { opacity: 0.72; }
+
+@media print {
+  .cover-substrate {
+    opacity: 0.42;
+  }
+  .cover-substrate .sub-c {
+    font-size: 9.5pt;
+  }
+}
+
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* nested tiles — suggesting scale repetition into infinity */
+.tile-container {
+  position: relative;
+  width: min(580px, 92vw);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-outer,
+.tile-middle,
+.tile-primary {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  gap: 2px;
+}
+
+.tile-outer {
+  width: 100%;
+  height: 100%;
+  opacity: 0.22;
+}
+
+.tile-middle {
+  width: 62%;
+  height: 62%;
+  opacity: 0.38;
+}
+
+.tile-primary {
+  width: 34%;
+  height: 34%;
+  opacity: 1;
+  z-index: 2;
+}
+
+.tile-outer .c,
+.tile-middle .c,
+.tile-primary .c {
+  background: var(--tile-faint);
+  border-radius: 1px;
+}
+
+.tile-primary .c {
+  background: var(--tile-faint);
+  position: relative;
+}
+
+/* the one live cell, at position (1,1) of the primary tile */
+.tile-primary .c.live {
+  background: var(--warm-home);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tile-primary .c.live .digit {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  font-size: clamp(14px, 3.2vw, 26px);
+  color: var(--rust);
+  letter-spacing: 0.02em;
+}
+.cover-text {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 36px 20px;
+  background: linear-gradient(
+    to bottom,
+    rgba(246, 241, 232, 0) 0%,
+    rgba(246, 241, 232, 0.72) 22%,
+    rgba(246, 241, 232, 0.94) 46%,
+    rgba(246, 241, 232, 0.94) 72%,
+    rgba(246, 241, 232, 0) 100%
+  );
+  max-width: 100%;
+  width: 100%;
+}
+
+.cover-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+
+.cover-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(52px, 10vw, 96px);
+  line-height: 0.98;
+  color: var(--ink);
+  margin-bottom: 8px;
+  letter-spacing: -0.018em;
+}
+
+.cover-title .finite {
+  display: inline-block;
+  color: var(--ink);
+}
+
+.cover-title .infinity {
+  display: inline-block;
+  color: var(--rust);
+  font-style: italic;
+  font-weight: 500;
+  margin-left: 0.18em;
+}
+
+.cover-subtitle {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--muted);
+  margin-top: 22px;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.cover-byline {
+  font-family: 'EB Garamond', serif;
+  color: var(--rust);
+  font-size: 16px;
+  margin-top: 36px;
+  letter-spacing: 0.02em;
+}
+
+/* ====================== INTERIOR PAGES ====================== */
+
+.small-caps {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.78em;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 500;
+}
+
+.pagenum {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  color: var(--rust);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+.half-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(36px, 7vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-align: center;
+}
+
+.half-title .word-a { color: var(--ink); }
+.half-title .word-b {
+  color: var(--rust);
+  font-style: italic;
+  font-weight: 500;
+  margin-left: 0.14em;
+}
+
+.title-page {
+  text-align: center;
+}
+
+.title-page-kicker {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 60px;
+  font-weight: 500;
+}
+
+.title-page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(46px, 8vw, 78px);
+  line-height: 1.0;
+  letter-spacing: -0.018em;
+  margin-bottom: 26px;
+}
+
+.title-page-title .word-a { color: var(--ink); }
+.title-page-title .word-b {
+  color: var(--rust);
+  font-style: italic;
+  font-weight: 500;
+  margin-left: 0.14em;
+}
+
+.title-page-subtitle {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--muted);
+  margin-bottom: 80px;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.title-page-author {
+  font-family: 'EB Garamond', serif;
+  font-size: 17px;
+  color: var(--rust);
+  letter-spacing: 0.03em;
+}
+
+/* ====================== CONTENTS ====================== */
+
+.contents-page {
+  padding: 90px 0 80px;
+}
+
+.contents-head {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  color: var(--ink);
+  text-align: center;
+}
+
+.contents-head em {
+  color: var(--rust);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.contents-kicker {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 48px;
+}
+
+.contents-list {
+  list-style: none;
+  padding: 0;
+  max-width: 560px;
+  margin: 0 auto;
+  counter-reset: book-counter;
+}
+
+.contents-list li {
+  display: block;
+  padding: 14px 4px 14px 60px;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+
+.contents-list li:last-child {
+  border-bottom: none;
+}
+
+.contents-list li::before {
+  counter-increment: book-counter;
+  content: counter(book-counter, decimal-leading-zero);
+  position: absolute;
+  left: 4px;
+  top: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+
+.contents-list a {
+  text-decoration: none;
+  color: var(--ink);
+  display: block;
+  transition: color 0.15s;
+}
+
+.contents-list a:hover {
+  color: var(--rust);
+}
+
+.contents-list .book-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--rust);
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+  font-style: italic;
+}
+
+.contents-list .book-sub {
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-top: 3px;
+  font-style: italic;
+}
+
+.contents-list li.no-link .book-title {
+  /* books not yet linked (e.g. earlier books without HTML artifacts on the page) */
+  color: var(--ink);
+  opacity: 0.78;
+}
+
+/* ====================== OPENING NOTE ====================== */
+
+.note-page {
+  padding: 100px 0 100px;
+}
+
+.note-head {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.note-head em {
+  color: var(--rust);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.note-body {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.note-body p {
+  font-size: 19px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+  color: var(--ink);
+}
+
+.note-body p em {
+  color: var(--rust);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.note-body p.lead::first-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 56px;
+  float: left;
+  line-height: 0.85;
+  padding: 6px 8px 0 0;
+  color: var(--rust);
+  font-weight: 400;
+}
+
+.note-signoff {
+  text-align: center;
+  margin-top: 64px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+/* ====================== FOOTER / ENDMATTER ====================== */
+
+.end-marker {
+  text-align: center;
+  color: var(--gold);
+  letter-spacing: 0.4em;
+  font-size: 10px;
+  margin: 40px 0;
+}
+
+.begin-cue {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  letter-spacing: 0.24em;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-style: italic;
+  margin-top: 40px;
+}
+
+.colophon {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-top: 80px;
+  text-transform: uppercase;
+}
+
+.colophon a { color: var(--muted); text-decoration: none; border-bottom: 1px dotted var(--line); }
+
+/* ====================== RESPONSIVE ====================== */
+
+@media (max-width: 560px) {
+  body { font-size: 18px; }
+  .tile-primary { width: 42%; height: 42%; }
+  .tile-middle { width: 72%; height: 72%; }
+  .cover-title { font-size: 48px; }
+  .contents-list li { padding-left: 54px; }
+  .contents-list .book-title { font-size: 19px; }
+  .contents-list .book-sub { font-size: 14px; }
+  .note-body p { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+<div class="volume">
+
+<!-- ========================================= COVER ========================================= -->
+<section class="cover-page">
+  <!-- The substrate: the actual 9x12 DRPT (digital-root power table) of
+       base ten, tiled 3 horizontally x 6 vertically, forming the subtle
+       ground of the cover. Every digit is a true value of n^k mod 9. From
+       across the room: a cream cover with a title. Up close: the cover is
+       made of arithmetic. That is the book. -->
+  <div class="cover-substrate" aria-hidden="true"><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">2</span><span class="sub-c">4</span><span class="sub-c">8</span><span class="sub-c">7</span><span class="sub-c">5</span><span class="sub-c">1</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">3</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">4</span><span class="sub-c">7</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">5</span><span class="sub-c">7</span><span class="sub-c">8</span><span class="sub-c">4</span><span class="sub-c">2</span><span class="sub-c">1</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">6</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">7</span><span class="sub-c">4</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">8</span><span class="sub-c">1</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span><span class="sub-c">9</span></div>
+  <div class="cover-bg" aria-hidden="true">
+    <div class="tile-container">
+      <!-- outermost faint tile, suggesting infinite self-similar scaling -->
+      <div class="tile-outer">
+        <!-- 81 cells -->
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+      </div>
+      <div class="tile-middle">
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+        <span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>
+      </div>
+      <!-- primary tile, with one live cell at (1,1) -->
+      <div class="tile-primary"><span class="c live"><span class="digit">1</span></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span></div>
+    </div>
+  </div>
+
+  <div class="cover-text">
+    <div class="cover-label">— a collected volume —</div>
+    <h1 class="cover-title"><span class="finite">Finite</span><span class="infinity">Infinity.</span></h1>
+    <p class="cover-subtitle">Twenty-three small books on Plato's missing substrate.</p>
+    <p class="cover-byline">by Justin Grieshop</p>
+  </div>
+</section>
+
+<!-- ========================================= HALF-TITLE ========================================= -->
+<section class="page center">
+  <h2 class="half-title"><span class="word-a">Finite</span><span class="word-b">Infinity.</span></h2>
+</section>
+
+<!-- ========================================= TITLE PAGE ========================================= -->
+<section class="page center title-page">
+  <div class="title-page-kicker">— a collected volume —</div>
+  <h2 class="title-page-title"><span class="word-a">Finite</span><span class="word-b">Infinity.</span></h2>
+  <p class="title-page-subtitle">Twenty-three small books on Plato's missing substrate.</p>
+  <p class="title-page-author">by Justin Grieshop</p>
+</section>
+
+<!-- ========================================= CONTENTS ========================================= -->
+<section class="page contents-page">
+  <div class="contents-kicker">— contents —</div>
+  <h2 class="contents-head">Twenty-three <em>small books,</em> in order.</h2>
+
+  <ol class="contents-list">
+    <li><a href="infinity_small_book.html">
+      <div class="book-title">Infinity.</div>
+      <div class="book-sub">It has a shape. You can see it. It fits on one page.</div>
+    </a></li>
+
+    <li><a href="three.html">
+      <div class="book-title">Three.</div>
+      <div class="book-sub">What a number is, underneath the numeral.</div>
+    </a></li>
+
+    <li><a href="the_seam.html">
+      <div class="book-title">The Seam.</div>
+      <div class="book-sub">Why mathematics and physics were ever thought to be separate.</div>
+    </a></li>
+
+    <li><a href="the_arrow.html">
+      <div class="book-title">The Arrow.</div>
+      <div class="book-sub">On Zeno, and an assumption nobody names.</div>
+    </a></li>
+
+    <li><a href="the_water.html">
+      <div class="book-title">The Water.</div>
+      <div class="book-sub">On things we have been assuming for so long we forgot we were assuming them.</div>
+    </a></li>
+
+    <li><a href="the_dials.html">
+      <div class="book-title">The Dials.</div>
+      <div class="book-sub">On the numbers the universe has, and what happens when one stops being arbitrary.</div>
+    </a></li>
+
+    <li><a href="the_only.html">
+      <div class="book-title">The Only.</div>
+      <div class="book-sub">Why the four numbers are the four numbers — and could not have been any others.</div>
+    </a></li>
+
+    <li><a href="one_thirty_seven.html">
+      <div class="book-title">One Thirty-Seven.</div>
+      <div class="book-sub">The number that holds atoms together, and the fraction hiding inside it.</div>
+    </a></li>
+
+    <li><a href="seventy.html">
+      <div class="book-title">Seventy.</div>
+      <div class="book-sub">On how fast the universe is flying apart, and a fight nobody has been winning.</div>
+    </a></li>
+
+    <li><a href="coming_back.html">
+      <div class="book-title">Coming Back.</div>
+      <div class="book-sub">Newton showed us how to go to infinity. Now we learn how to come home.</div>
+    </a></li>
+
+    <li><a href="the_model.html">
+      <div class="book-title">The Model.</div>
+      <div class="book-sub">On the most successful theory in physics, and where its numbers come from.</div>
+    </a></li>
+
+    <li><a href="the_worst_prediction.html">
+      <div class="book-title">The Worst Prediction.</div>
+      <div class="book-sub">On the cosmological constant, and what an illegal operation looks like.</div>
+    </a></li>
+
+    <li><a href="what_keeps_happening.html">
+      <div class="book-title">What Keeps Happening.</div>
+      <div class="book-sub">Four integers, the constants they produce, and a quiet admission.</div>
+    </a></li>
+
+    <li><a href="the_inspiral.html">
+      <div class="book-title">The Inspiral.</div>
+      <div class="book-sub">Two objects falling toward each other, and what a test with teeth looks like.</div>
+    </a></li>
+
+    <li><a href="the_tiling_fractal.html">
+      <div class="book-title">The Tiling Fractal.</div>
+      <div class="book-sub">The tile isn't just small. It is infinitely large as well.</div>
+    </a></li>
+
+    <li><a href="the_expansion.html">
+      <div class="book-title">The Expansion.</div>
+      <div class="book-sub">On the cosmic microwave background, and four integers read at cosmological scale.</div>
+    </a></li>
+
+    <li><a href="the_ground.html">
+      <div class="book-title">The Ground.</div>
+      <div class="book-sub">What the program stands on, said plainly. It turns out to be nothing new.</div>
+    </a></li>
+
+    <li><a href="the_test.html">
+      <div class="book-title">The Test.</div>
+      <div class="book-sub">How the program keeps itself from lying to itself.</div>
+    </a></li>
+
+    <li><a href="the_shadows.html">
+      <div class="book-title">The Shadows.</div>
+      <div class="book-sub">On the kernels that are allowed, and the ones that are not.</div>
+    </a></li>
+
+    <li><a href="the_gauge.html">
+      <div class="book-title">The Gauge.</div>
+      <div class="book-sub">On the substrate before its rendering, and what you can compute by hand.</div>
+    </a></li>
+
+    <li><a href="the_return.html">
+      <div class="book-title">The Return.</div>
+      <div class="book-sub">Newton's outward journey, and the way back from a road we forgot we were on.</div>
+    </a></li>
+
+    <li><a href="the_line.html">
+      <div class="book-title">The Line.</div>
+      <div class="book-sub">What Newton's three laws actually are, seen from above the line.</div>
+    </a></li>
+
+    <li><a href="the_conversation.html">
+      <div class="book-title">The Conversation.</div>
+      <div class="book-sub">A conversation we have not talked about in a while.</div>
+    </a></li>
+  </ol>
+</section>
+
+<!-- ========================================= OPENING NOTE ========================================= -->
+<section class="page note-page">
+  <h2 class="note-head">A note <em>on how to read this.</em></h2>
+
+  <div class="note-body">
+    <p class="lead">
+      What follows is a series of small books. Each one is
+      short — six or seven pages — and each one does one
+      thing. They are meant to be read in order, but they
+      do not require it. You can begin anywhere. The first
+      book, <em>Infinity</em>, is a gentle place to start.
+      The last book, <em>The Conversation</em>, is where
+      the series quietly turns toward what all the others
+      have been circling.
+    </p>
+
+    <p>
+      Each book can be read in about fifteen minutes. The
+      whole volume is the work of many years. The time
+      difference is not an accident.
+    </p>
+
+    <p>
+      The books do not argue with the reader. They show
+      small things. They stop when the showing is done. If
+      a book raises a question it has not answered, the
+      next book or the one after that will usually return
+      to it. If you want to follow a derivation all the way
+      to the computer code that produced it, the colophon
+      at the bottom of each book links to the public
+      repository where every calculation lives.
+    </p>
+
+    <p>
+      That is the whole of the instruction. <em>Turn
+      gently.</em>
+    </p>
+  </div>
+
+  <div class="note-signoff">— the volume begins —</div>
+</section>
+
+<div class="end-marker">· · ·</div>
+
+<div class="colophon">
+  Marithmetics · <a href="https://github.com/public-arch/Marithmetics">github.com/public-arch/Marithmetics</a>
+</div>
+
+</div>
+
+</body>
+</html>
