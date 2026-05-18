@@ -818,18 +818,17 @@
 
   <div class="instrument">
     <div class="instrument-head">
-      <h3 class="instrument-title">Power residues on <em style="color: var(--gold); font-style:italic;">Z/NZ</em></h3>
-      <span class="instrument-sub">Choose a modulus.<br>Patterns are computed live.</span>
+      <h3 class="instrument-title">Digital root power table <em style="color: var(--gold); font-style:italic;">— dr(bᵖ)</em></h3>
+      <span class="instrument-sub">Choose a base.<br>The table is computed live.</span>
     </div>
 
     <div class="instrument-controls">
-      <span class="ctrl-label">Modulus</span>
-      <button class="ctrl-btn" data-mod="7">7</button>
-      <button class="ctrl-btn" data-mod="9">9</button>
-      <button class="ctrl-btn active" data-mod="10">10</button>
-      <button class="ctrl-btn" data-mod="12">12</button>
-      <button class="ctrl-btn" data-mod="13">13</button>
-      <button class="ctrl-btn" data-mod="17">17</button>
+      <span class="ctrl-label">Base</span>
+      <button class="ctrl-btn" data-base="2">2</button>
+      <button class="ctrl-btn" data-base="7">7</button>
+      <button class="ctrl-btn active" data-base="10">10</button>
+      <button class="ctrl-btn" data-base="13">13</button>
+      <button class="ctrl-btn" data-base="16">16</button>
     </div>
 
     <div class="grid-wrap">
@@ -837,7 +836,10 @@
     </div>
 
     <p class="instrument-caption">
-      Each cell shows <span class="accent">aⁿ mod N</span>. Brighter cells are <span class="accent">fixed points</span> — values where raising the base lands back on the base. The shaded columns mark <span class="accent">attractor patterns</span> — recurrences the integers fall into without being told to. This is a fragment of the structure my research program — <a href="https://marithmetics.com" target="_blank">Marithmetics</a> — works from. Finite. Periodic. First-principles.
+      Each cell shows the <span class="accent">digital root of bᵖ</span> — i.e. bᵖ taken mod (b−1), with zero mapped to (b−1). Brighter cells mark where a row <span class="accent">closes its cycle</span> — returning to its starting digit. Shaded cells mark the <span class="accent">attractor</span> — the row collapses to (b−1) and stays there. In base 10 the multiplicative inverse pairs <span class="accent">2↔5</span> and <span class="accent">4↔7</span> sit visibly side by side. Switch bases to watch the same skeleton re-emerge in different clothes.
+    </p>
+    <p class="instrument-caption" style="margin-top:1.2rem;">
+      Periodicity itself is not new. Euler and Gauss saw that bᵖ mod N cycles; modular arithmetic has been doing this work for centuries. The narrower claim this programme builds on is that the digital root power table, taken <em>as a formal object</em> — a <span class="accent">tile</span> rather than the byproduct of a computation — admits a clean theory of its own. Once the tile is a first-class object, base-invariance becomes provable, the structural triple <span class="accent">(137, 107, 103)</span> becomes inevitable rather than coincidental, and several questions older than the modern academy — Zeno's paradoxes, Plato's missing substrate, the gap between finite integers and continuous physics — admit cleaner answers. The instrument above shows a fragment of one tile. The full programme lives at <a href="https://marithmetics.com" target="_blank">marithmetics.com</a>.
     </p>
   </div>
 
@@ -937,6 +939,7 @@
 
   <div class="longform">
     <p>The program is called <em>Marithmetics</em>. It has its own canonical site at <a href="https://marithmetics.com" target="_blank">marithmetics.com</a>, where every claim is paired with a deterministic demonstration, a published paper, and a public attack surface.</p>
+    <p><strong>What's actually new.</strong> Periodicity in the integers is not a discovery — Euler, Fermat, and Gauss already knew that powers of integers cycle inside modular arithmetic. The contribution here is narrower and stranger: treating the <em>digital root power table</em> as a formal object — a <em>tile</em> — instead of a byproduct of computation. Once the tile is a first-class mathematical object, properties that previously looked like coincidences become theorems: base-invariance across base 2, 7, 10, 16; the structural triple (137, 107, 103) emerging in every base tested; the multiplicative inverse pairs sitting predictably inside every tile. These properties are individually small. Together they offer a different vantage point on questions the discipline has carried for two and a half thousand years — Zeno's paradoxes of motion, Plato's missing substrate beneath geometry, and the gap between finite integer structure and continuous physics. The thesis is not that the old answers were wrong. The thesis is that with the tile in hand, several of those questions admit cleaner ones.</p>
     <p>The work is conservative on purpose. Every claim has to compress to a finite, checkable object before it leaves the workshop. Every demo is reproducible. Every paper has a published method of falsification. Audit-grade, applied to mathematics instead of accounting.</p>
   </div>
 
@@ -1286,27 +1289,31 @@
   const initial = window.location.hash.replace('#', '') || 'home';
   showPage(initial);
 
-  // Live mod-N power residue instrument
-  function renderGrid(N) {
-    const cols = Math.min(N, 13);
+  // Live digital-root power table — dr(b^p) where dr is taken in base B
+  // Working modulus is N = B - 1; the digital-root convention maps 0 to N.
+  function renderGrid(B) {
+    const N = B - 1;
+    const cols = Math.min(12, Math.max(8, N));
     let html = '<thead><tr><th>Base</th>';
     for (let p = 1; p <= cols; p++) html += `<th>^${p}</th>`;
     html += '</tr></thead><tbody>';
 
-    const fixedPoints = new Set();
-    for (let a = 0; a < N; a++) {
-      if ((a * a) % N === a) fixedPoints.add(a);
-    }
+    const toDR = (x) => {
+      const r = x % N;
+      return r === 0 ? N : r;
+    };
 
-    for (let a = 1; a < N; a++) {
+    for (let a = 1; a <= N; a++) {
       html += `<tr><td>${a}</td>`;
-      let val = 1;
+      let raw = 1; // tracks a^p mod N
       for (let p = 1; p <= cols; p++) {
-        val = (val * a) % N;
-        const isReturnToBase = val === a && p > 1;
+        raw = (raw * a) % N;
+        const val = raw === 0 ? N : raw;
         let cls = '';
-        if (isReturnToBase) cls = 'fixed-point';
-        else if (fixedPoints.has(val) && val !== 1 && val !== 0) cls = 'attractor';
+        // cycle-close: row returns to its starting digit (for p > 1)
+        if (val === a && p > 1) cls = 'fixed-point';
+        // attractor: row has collapsed to N (the dr-zero element)
+        else if (val === N && a !== N) cls = 'attractor';
         html += `<td class="${cls}">${val}</td>`;
       }
       html += '</tr>';
@@ -1319,7 +1326,7 @@
     btn.addEventListener('click', () => {
       document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderGrid(parseInt(btn.dataset.mod, 10));
+      renderGrid(parseInt(btn.dataset.base, 10));
     });
   });
 
