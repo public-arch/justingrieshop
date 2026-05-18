@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About — Justin Grieshop</title>
+<meta name="description" content="Justin Grieshop — Senior Director of AI &amp; Analytics, independent researcher behind Marithmetics, author of Finite Infinity." />
+<link rel="canonical" href="https://justingrieshop.com/#about" />
+<meta http-equiv="refresh" content="0; url=/#about" />
+<meta property="og:title" content="About — Justin Grieshop" />
+<meta property="og:description" content="Senior Director of AI &amp; Analytics, independent researcher, author of Finite Infinity." />
+<meta property="og:url" content="https://justingrieshop.com/#about" />
+<meta property="og:type" content="profile" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+Pro:wght@300;400&display=swap" rel="stylesheet" />
+<script>
+  // JS redirect as a faster path than meta refresh
+  if (typeof window !== 'undefined') {
+    window.location.replace('/#about');
+  }
+</script>
+<style>
+  :root {
+    --gold: #e4bb7c;
+    --bg: #0d1117;
+    --text: #f5f5f5;
+    --text-muted: rgba(255,255,255,0.65);
+    --border: rgba(228,187,124,0.18);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif Pro', Georgia, serif;
+    line-height: 1.65;
+    padding: 3rem 1.5rem;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.1;
+    margin: 0 0 0.4rem;
+  }
+  h1 em { color: var(--gold); font-style: italic; font-weight: 400; }
+  .eyebrow {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.78rem;
+    margin-bottom: 1.2rem;
+  }
+  .lede { color: var(--text-muted); font-size: 1.1rem; margin: 1.2rem 0 2rem; }
+  p { margin: 0 0 1.1rem; }
+  a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--border); }
+  a:hover { border-color: var(--gold); }
+  .redirect-note {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 2.5rem;
+  }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 1.4rem; margin-top: 2.4rem; }
+  @media (min-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .block h3 { color: var(--gold); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 0.6rem; font-weight: 500; }
+  .block ul { list-style: none; padding: 0; margin: 0; }
+  .block li { margin-bottom: 0.4rem; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="redirect-note">
+    This page has moved to <a href="https://justingrieshop.com/#about">justingrieshop.com/#about</a>. You should be redirected automatically.
+  </p>
+
+  <p class="eyebrow">— About</p>
+  <h1>A servant <em>operator.</em></h1>
+  <p class="lede">I lead AI &amp; Analytics for a large enterprise, run an independent research program, and wrote a book on what Plato called the missing substrate. The through-line is the same in every domain: strip the noise, build from the foundation, amplify the humans doing the work.</p>
+
+  <p>The work looks scattered until you see the method. In the enterprise, that means leading transformation across nine functional domains with the discipline of an operator and the bearing of a servant leader. In research, it means treating mathematical objects as exact finite sets rather than statistical approximations. In writing, it means showing rather than arguing — six or seven pages at a time, fifteen minutes per book.</p>
+
+  <p>I live near Cincinnati. I read carefully. I think slowly on purpose.</p>
+
+  <div class="grid">
+    <div class="block">
+      <h3>— Credentials</h3>
+      <ul>
+        <li>Harvard University — graduate study</li>
+        <li>University of Cincinnati — statistics &amp; economics</li>
+        <li>Senior Director · AI &amp; Analytics</li>
+        <li>Independent researcher · Marithmetics</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>— Profiles</h3>
+      <ul>
+        <li><a href="https://www.linkedin.com/in/justin-grieshop-ab754065/">LinkedIn</a></li>
+        <li><a href="https://github.com/public-arch">GitHub · public-arch</a></li>
+        <li><a href="https://arxiv.org/a/grieshop_j_1">arXiv</a></li>
+        <li><a href="https://marithmetics.com">Marithmetics.com</a></li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>— Contact</h3>
+      <ul>
+        <li><a href="mailto:public@marithmetics.com">public@marithmetics.com</a></li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>— Continue</h3>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#research">Research</a></li>
+        <li><a href="/#book">Book — Finite Infinity</a></li>
+        <li><a href="/#now">Now</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>
