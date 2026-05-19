@@ -209,7 +209,7 @@
     position: relative;
   }
   .instrument::before {
-    content: "INSTRUMENT · 01";
+    content: "DISCOVERY · DRPT";
     position: absolute; top: -10px; left: 24px;
     background: var(--bg); padding: 0 12px;
     font-family: var(--font-mono);
@@ -295,6 +295,58 @@
     line-height: 1.65; font-style: italic;
   }
   .instrument-caption .accent { color: var(--gold); font-style: normal; }
+
+  /* PATTERN DISCOVERY */
+  .base-label {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.22em;
+    color: var(--text-muted); text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .base-label .accent { color: var(--gold); }
+  .pattern-cats { margin: 24px 0 0; }
+  .pattern-cat-label {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.22em;
+    color: var(--text-faint); text-transform: uppercase;
+    margin: 16px 0 8px; display: block;
+  }
+  .pattern-cat-label:first-child { margin-top: 0; }
+  .pattern-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pat-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: transparent; color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 5px 10px; cursor: pointer;
+    transition: all 0.15s ease; white-space: nowrap;
+  }
+  .pat-btn:hover { border-color: var(--border-accent); color: var(--text); }
+  .pat-btn.active {
+    background: rgba(228,187,124,0.1);
+    color: var(--gold); border-color: var(--gold);
+  }
+  .pattern-desc {
+    font-family: var(--font-body);
+    font-size: 14px; color: var(--text-muted);
+    line-height: 1.6; font-style: italic;
+    margin: 20px 0 0; min-height: 20px;
+  }
+  .pattern-desc .accent { color: var(--gold); font-style: normal; }
+  .grid-table td.hl { background: rgba(228, 187, 124, 0.28); color: var(--gold-bright); font-weight: 600; }
+  .grid-table td.hl-a { background: rgba(228, 187, 124, 0.22); color: var(--gold-bright); }
+  .grid-table td.hl-b { background: rgba(15, 52, 96, 0.55); color: #8bb8e8; }
+  .grid-table td.hl-c { background: rgba(86, 211, 100, 0.15); color: #56d364; }
+  .grid-table td.hl-d { background: rgba(188, 140, 75, 0.2); color: #d4a85c; }
+  .grid-table td.hl-dim { opacity: 0.25; }
+  .grid-table td.hl-cycle-1 { background: rgba(228, 187, 124, 0.32); color: var(--gold-bright); font-weight: 600; }
+  .grid-table td.hl-cycle-2 { background: rgba(15, 52, 96, 0.5); color: #8bb8e8; }
+  .grid-table td.hl-cycle-3 { background: rgba(86, 211, 100, 0.15); color: #56d364; }
+  .grid-table td.hl-cycle-4 { background: rgba(188, 100, 200, 0.18); color: #c88bd4; }
+  .grid-table td.hl-cycle-6 { background: rgba(200, 120, 80, 0.2); color: #d4956c; }
+  .grid-table td.hl-cycle-other { background: rgba(100, 100, 100, 0.2); color: var(--text-muted); }
+  .grid-table tbody td.hl-row-a { background: rgba(228,187,124,0.04); }
+  .grid-table tbody td.hl-row-b { background: rgba(15,52,96,0.12); }
 
   /* LANES */
   .lanes {
@@ -819,27 +871,63 @@
   <div class="instrument">
     <div class="instrument-head">
       <h3 class="instrument-title">Digital root power table <em style="color: var(--gold); font-style:italic;">— dr(bᵖ)</em></h3>
-      <span class="instrument-sub">Choose a base.<br>The table is computed live.</span>
+      <span class="instrument-sub">Choose a base.<br>Select a pattern.</span>
     </div>
 
+    <p class="base-label">Numerical base <span class="accent">(mod <span id="modLabel">9</span>)</span></p>
     <div class="instrument-controls">
-      <span class="ctrl-label">Base</span>
-      <button class="ctrl-btn" data-base="2">2</button>
-      <button class="ctrl-btn" data-base="7">7</button>
       <button class="ctrl-btn active" data-base="10">10</button>
+      <button class="ctrl-btn" data-base="3">3</button>
+      <button class="ctrl-btn" data-base="4">4</button>
+      <button class="ctrl-btn" data-base="5">5</button>
+      <button class="ctrl-btn" data-base="6">6</button>
+      <button class="ctrl-btn" data-base="7">7</button>
+      <button class="ctrl-btn" data-base="8">8</button>
+      <button class="ctrl-btn" data-base="9">9</button>
+      <button class="ctrl-btn" data-base="11">11</button>
+      <button class="ctrl-btn" data-base="12">12</button>
       <button class="ctrl-btn" data-base="13">13</button>
+      <button class="ctrl-btn" data-base="14">14</button>
+      <button class="ctrl-btn" data-base="15">15</button>
       <button class="ctrl-btn" data-base="16">16</button>
     </div>
+
+    <div class="pattern-cats">
+      <span class="pattern-cat-label">Horizontal</span>
+      <div class="pattern-btns">
+        <button class="pat-btn" data-pat="inverse-primary">Primary Inverse Pair</button>
+        <button class="pat-btn" data-pat="inverse-secondary">Secondary Inverse Pair</button>
+        <button class="pat-btn" data-pat="attractor-bases">Attractor Bases</button>
+        <button class="pat-btn" data-pat="cycle-lengths">Cycle Lengths</button>
+        <button class="pat-btn" data-pat="identity">Identity Element</button>
+        <button class="pat-btn" data-pat="frequent">Frequent Values</button>
+        <button class="pat-btn" data-pat="diagonal">Diagonal Chains</button>
+        <button class="pat-btn" data-pat="oscillations">Oscillations</button>
+      </div>
+      <span class="pattern-cat-label">Vertical</span>
+      <div class="pattern-btns">
+        <button class="pat-btn" data-pat="div-mirrors">Divergent Mirrors</button>
+        <button class="pat-btn" data-pat="col-tiling">Column Tiling</button>
+        <button class="pat-btn" data-pat="col-identical">Identical Columns</button>
+        <button class="pat-btn" data-pat="col-attractors">Column Attractors</button>
+        <button class="pat-btn" data-pat="col-complements">Column Complements</button>
+        <button class="pat-btn" data-pat="col-progressions">Column Progressions</button>
+      </div>
+      <span class="pattern-cat-label">Collapsed</span>
+      <div class="pattern-btns">
+        <button class="pat-btn" data-pat="collapsed-cols">Collapsed Columns</button>
+        <button class="pat-btn" data-pat="collapsed-rows">Collapsed Rows</button>
+      </div>
+    </div>
+
+    <p class="pattern-desc" id="patternDesc">Select a pattern above to discover structure in the tile. Each cell shows <span class="accent">dr(bᵖ)</span> — the digital root of b raised to the p-th power.</p>
 
     <div class="grid-wrap">
       <table class="grid-table" id="grid"></table>
     </div>
 
     <p class="instrument-caption">
-      Each cell shows the <span class="accent">digital root of bᵖ</span> — i.e. bᵖ taken mod (b−1), with zero mapped to (b−1). Brighter cells mark where a row <span class="accent">closes its cycle</span> — returning to its starting digit. Shaded cells mark the <span class="accent">attractor</span> — the row collapses to (b−1) and stays there. In base 10 the multiplicative inverse pairs <span class="accent">2↔5</span> and <span class="accent">4↔7</span> sit visibly side by side. Switch bases to watch the same skeleton re-emerge in different clothes.
-    </p>
-    <p class="instrument-caption" style="margin-top:1.2rem;">
-      Periodicity itself is not new. Euler and Gauss saw that bᵖ mod N cycles; modular arithmetic has been doing this work for centuries. The narrower claim this programme builds on is that the digital root power table, taken <em>as a formal object</em> — a <span class="accent">tile</span> rather than the byproduct of a computation — admits a clean theory of its own. Once the tile is a first-class object, base-invariance becomes provable, the structural triple <span class="accent">(137, 107, 103)</span> becomes inevitable rather than coincidental, and several questions older than the modern academy — Zeno's paradoxes, Plato's missing substrate, the gap between finite integers and continuous physics — admit cleaner answers. The instrument above shows a fragment of one tile. The full programme lives at <a href="https://marithmetics.com" target="_blank">marithmetics.com</a>.
+      Periodicity itself is not new — Euler and Gauss saw that bᵖ mod N cycles. The claim this programme builds on is that the digital root power table, taken <em>as a formal object</em> — a <span class="accent">tile</span> — admits a clean theory of its own. Once the tile is first-class, base-invariance becomes provable, the structural triple <span class="accent">(137, 107, 103)</span> becomes inevitable, and questions older than the modern academy admit cleaner answers. The full programme lives at <a href="https://marithmetics.com" target="_blank">marithmetics.com</a>.
     </p>
   </div>
 
@@ -1287,32 +1375,358 @@
   const initial = window.location.hash.replace('#', '') || 'home';
   showPage(initial);
 
-  // Live digital-root power table — dr(b^p) where dr is taken in base B
-  // Working modulus is N = B - 1; the digital-root convention maps 0 to N.
-  function renderGrid(B) {
+  // DRPT Discovery Engine
+  const COLS = 12;
+  let currentBase = 10;
+  let currentPattern = null;
+
+  function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+
+  function buildGrid(B) {
     const N = B - 1;
-    const cols = Math.min(12, Math.max(8, N));
-    let html = '<thead><tr><th>Base</th>';
-    for (let p = 1; p <= cols; p++) html += `<th>^${p}</th>`;
-    html += '</tr></thead><tbody>';
-
-    const toDR = (x) => {
-      const r = x % N;
-      return r === 0 ? N : r;
-    };
-
+    const grid = [];
     for (let a = 1; a <= N; a++) {
-      html += `<tr><td>${a}</td>`;
-      let raw = 1; // tracks a^p mod N
-      for (let p = 1; p <= cols; p++) {
+      const row = [];
+      let raw = 1;
+      for (let p = 1; p <= COLS; p++) {
         raw = (raw * a) % N;
-        const val = raw === 0 ? N : raw;
-        let cls = '';
-        // cycle-close: row returns to its starting digit (for p > 1)
-        if (val === a && p > 1) cls = 'fixed-point';
-        // attractor: row has collapsed to N (the dr-zero element)
-        else if (val === N && a !== N) cls = 'attractor';
-        html += `<td class="${cls}">${val}</td>`;
+        row.push(raw === 0 ? N : raw);
+      }
+      grid.push(row);
+    }
+    return grid;
+  }
+
+  function emptyHL(grid) { return grid.map(r => r.map(() => '')); }
+
+  function getCycleLen(row) {
+    const start = row[0];
+    for (let i = 1; i < row.length; i++) {
+      if (row[i] === start) return i;
+    }
+    return row.length;
+  }
+
+  const patternDefs = {
+    'inverse-primary': {
+      desc: 'Row pairs whose bases are multiplicative inverses mod (B−1): <span class="accent">a·b ≡ 1</span>. In base 10: 2↔5 and 4↔7. Paired rows share identical cycle structure.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        const paired = new Set();
+        const colors = ['hl-a', 'hl-b', 'hl-c', 'hl-d'];
+        let ci = 0;
+        for (let a = 1; a <= N; a++) {
+          if (paired.has(a) || gcd(a, N) !== 1) continue;
+          let inv = -1;
+          for (let b = a; b <= N; b++) {
+            if ((a * b) % N === 1) { inv = b; break; }
+          }
+          if (inv === -1) continue;
+          const c = colors[ci % colors.length]; ci++;
+          for (let p = 0; p < COLS; p++) {
+            hl[a - 1][p] = c;
+            if (inv !== a) hl[inv - 1][p] = c;
+          }
+          paired.add(a); paired.add(inv);
+        }
+        for (let a = 1; a <= N; a++) {
+          if (!paired.has(a)) {
+            for (let p = 0; p < COLS; p++) hl[a - 1][p] = 'hl-dim';
+          }
+        }
+        return hl;
+      }
+    },
+    'inverse-secondary': {
+      desc: 'Row pairs whose bases are additive complements: <span class="accent">a + b = B−1</span>. These pairs produce mirrored digital-root sequences.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        const paired = new Set();
+        const colors = ['hl-a', 'hl-b', 'hl-c', 'hl-d'];
+        let ci = 0;
+        for (let a = 1; a <= N; a++) {
+          if (paired.has(a)) continue;
+          const b = N - a;
+          if (b < 1 || b > N || b === a) continue;
+          const c = colors[ci % colors.length]; ci++;
+          for (let p = 0; p < COLS; p++) { hl[a - 1][p] = c; hl[b - 1][p] = c; }
+          paired.add(a); paired.add(b);
+        }
+        for (let a = 1; a <= N; a++) {
+          if (!paired.has(a)) {
+            for (let p = 0; p < COLS; p++) hl[a - 1][p] = 'hl-dim';
+          }
+        }
+        return hl;
+      }
+    },
+    'attractor-bases': {
+      desc: 'Rows whose base is a multiple of (B−1). The digital root collapses to <span class="accent">B−1</span> at every power — a fixed-point absorbing the entire row.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        for (let a = 0; a < N; a++) {
+          const isAttractor = (a + 1) % N === 0;
+          for (let p = 0; p < COLS; p++) {
+            if (isAttractor) hl[a][p] = 'hl';
+            else if (grid[a][p] === N) hl[a][p] = 'hl-dim';
+          }
+        }
+        return hl;
+      }
+    },
+    'cycle-lengths': {
+      desc: 'Each row colored by how many powers until it returns to its starting digit. <span class="accent">Gold</span> = 1, <span class="accent" style="color:#8bb8e8">blue</span> = 2, <span class="accent" style="color:#56d364">green</span> = 3, <span class="accent" style="color:#c88bd4">purple</span> = 4, <span class="accent" style="color:#d4956c">orange</span> = 6.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        const cm = { 1: 'hl-cycle-1', 2: 'hl-cycle-2', 3: 'hl-cycle-3', 4: 'hl-cycle-4', 6: 'hl-cycle-6' };
+        for (let a = 0; a < N; a++) {
+          const len = getCycleLen(grid[a]);
+          const cls = cm[len] || 'hl-cycle-other';
+          for (let p = 0; p < COLS; p++) hl[a][p] = cls;
+        }
+        return hl;
+      }
+    },
+    'identity': {
+      desc: 'Positions where base^power ≡ 1 — the <span class="accent">multiplicative identity</span> in mod arithmetic. These mark cycle completion.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        for (let a = 0; a < N; a++) {
+          for (let p = 0; p < COLS; p++) {
+            if (grid[a][p] === 1) hl[a][p] = 'hl';
+          }
+        }
+        return hl;
+      }
+    },
+    'frequent': {
+      desc: 'The most frequently appearing value in each row, highlighted. Reveals which digits <span class="accent">dominate</span> each row\'s orbit.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        for (let a = 0; a < N; a++) {
+          const freq = {};
+          grid[a].forEach(v => { freq[v] = (freq[v] || 0) + 1; });
+          const maxF = Math.max(...Object.values(freq));
+          const doms = Object.keys(freq).filter(k => freq[k] === maxF).map(Number);
+          for (let p = 0; p < COLS; p++) {
+            if (doms.includes(grid[a][p])) hl[a][p] = 'hl';
+          }
+        }
+        return hl;
+      }
+    },
+    'diagonal': {
+      desc: 'The main diagonal (<span class="accent">gold</span>) and anti-diagonal (<span class="accent" style="color:#8bb8e8">blue</span>) of the tile. Diagonal structure reveals symmetry in the residue field.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        const dim = Math.min(N, COLS);
+        for (let i = 0; i < dim; i++) hl[i][i] = 'hl';
+        for (let i = 0; i < dim; i++) {
+          const j = dim - 1 - i;
+          if (j >= 0 && j < COLS && i < N) {
+            hl[i][j] = hl[i][j] === 'hl' ? 'hl' : 'hl-b';
+          }
+        }
+        return hl;
+      }
+    },
+    'oscillations': {
+      desc: 'Rows that alternate between exactly <span class="accent">two values</span>. These are period-2 orbits in the digital-root map.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        for (let a = 0; a < N; a++) {
+          const unique = [...new Set(grid[a])];
+          if (unique.length === 2) {
+            for (let p = 0; p < COLS; p++) {
+              hl[a][p] = grid[a][p] === unique[0] ? 'hl-a' : 'hl-b';
+            }
+          }
+        }
+        return hl;
+      }
+    },
+    'div-mirrors': {
+      desc: 'Column pairs where values read <span class="accent">top-to-bottom</span> in one match <span class="accent">bottom-to-top</span> in the other — vertical reflections.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        const cols = [];
+        for (let p = 0; p < COLS; p++) cols.push(grid.map(r => r[p]));
+        const paired = new Set();
+        const colors = ['hl-a', 'hl-b', 'hl-c', 'hl-d'];
+        let ci = 0;
+        for (let i = 0; i < COLS; i++) {
+          if (paired.has(i)) continue;
+          const rev = [...cols[i]].reverse();
+          for (let j = i + 1; j < COLS; j++) {
+            if (paired.has(j)) continue;
+            if (cols[j].every((v, k) => v === rev[k])) {
+              const c = colors[ci % colors.length]; ci++;
+              for (let a = 0; a < N; a++) { hl[a][i] = c; hl[a][j] = c; }
+              paired.add(i); paired.add(j); break;
+            }
+          }
+        }
+        return hl;
+      }
+    },
+    'col-tiling': {
+      desc: 'Columns whose values repeat with a <span class="accent">short period</span>. Shorter tiles indicate deeper structural regularity in the power position.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        const cols = [];
+        for (let p = 0; p < COLS; p++) cols.push(grid.map(r => r[p]));
+        for (let p = 0; p < COLS; p++) {
+          const col = cols[p];
+          for (let period = 1; period <= Math.floor(N / 2); period++) {
+            let tiles = true;
+            for (let i = period; i < N; i++) {
+              if (col[i] !== col[i % period]) { tiles = false; break; }
+            }
+            if (tiles && period < N) {
+              hl.forEach((row, a) => { row[p] = period <= 2 ? 'hl' : period <= 3 ? 'hl-a' : 'hl-b'; });
+              break;
+            }
+          }
+        }
+        return hl;
+      }
+    },
+    'col-identical': {
+      desc: 'Column groups with <span class="accent">identical values</span> in every row. The tile repeats its own column structure at different power positions.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        const sigs = [];
+        for (let p = 0; p < COLS; p++) sigs.push(grid.map(r => r[p]).join(','));
+        const groups = {};
+        sigs.forEach((sig, i) => { (groups[sig] = groups[sig] || []).push(i); });
+        const colors = ['hl-a', 'hl-b', 'hl-c', 'hl-d'];
+        let ci = 0;
+        Object.values(groups).forEach(group => {
+          if (group.length > 1) {
+            const c = colors[ci % colors.length]; ci++;
+            group.forEach(p => { for (let a = 0; a < N; a++) hl[a][p] = c; });
+          }
+        });
+        return hl;
+      }
+    },
+    'col-attractors': {
+      desc: 'Cells matching the <span class="accent">most common value</span> in their column. Reveals which digit each power position attracts toward.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        for (let p = 0; p < COLS; p++) {
+          const freq = {};
+          for (let a = 0; a < N; a++) { const v = grid[a][p]; freq[v] = (freq[v] || 0) + 1; }
+          const maxF = Math.max(...Object.values(freq));
+          if (maxF > 1) {
+            const attrs = Object.keys(freq).filter(k => freq[k] === maxF).map(Number);
+            for (let a = 0; a < N; a++) {
+              if (attrs.includes(grid[a][p])) hl[a][p] = 'hl';
+            }
+          }
+        }
+        return hl;
+      }
+    },
+    'col-complements': {
+      desc: 'Column pairs where values at each row <span class="accent">sum to a constant</span>. Additive duality made visible vertically.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        const cols = [];
+        for (let p = 0; p < COLS; p++) cols.push(grid.map(r => r[p]));
+        const paired = new Set();
+        const colors = ['hl-a', 'hl-b', 'hl-c', 'hl-d'];
+        let ci = 0;
+        for (let i = 0; i < COLS; i++) {
+          if (paired.has(i)) continue;
+          for (let j = i + 1; j < COLS; j++) {
+            if (paired.has(j)) continue;
+            const target = cols[i][0] + cols[j][0];
+            let match = true;
+            for (let k = 1; k < N; k++) {
+              if (cols[i][k] + cols[j][k] !== target) { match = false; break; }
+            }
+            if (match) {
+              const c = colors[ci % colors.length]; ci++;
+              for (let a = 0; a < N; a++) { hl[a][i] = c; hl[a][j] = c; }
+              paired.add(i); paired.add(j); break;
+            }
+          }
+        }
+        return hl;
+      }
+    },
+    'col-progressions': {
+      desc: 'Columns containing an <span class="accent">arithmetic progression</span> — values increasing by a constant step mod (B−1).',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        if (N < 3) return hl;
+        for (let p = 0; p < COLS; p++) {
+          const col = grid.map(r => r[p]);
+          const diff = ((col[1] - col[0]) % N + N) % N;
+          if (diff === 0) continue;
+          let isAP = true;
+          for (let i = 2; i < N; i++) {
+            if (((col[i] - col[i - 1]) % N + N) % N !== diff) { isAP = false; break; }
+          }
+          if (isAP) { for (let a = 0; a < N; a++) hl[a][p] = 'hl'; }
+        }
+        return hl;
+      }
+    },
+    'collapsed-cols': {
+      desc: 'Columns where every row has the <span class="accent">same value</span>. The power position has lost all base-dependence.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        for (let p = 0; p < COLS; p++) {
+          const vals = new Set(grid.map(r => r[p]));
+          if (vals.size === 1) { for (let a = 0; a < N; a++) hl[a][p] = 'hl'; }
+        }
+        return hl;
+      }
+    },
+    'collapsed-rows': {
+      desc: 'Rows where every power yields the <span class="accent">same digit</span>. The base has a fixed point in the digital-root map.',
+      fn(grid, N) {
+        const hl = emptyHL(grid);
+        for (let a = 0; a < N; a++) {
+          const vals = new Set(grid[a]);
+          if (vals.size === 1) { for (let p = 0; p < COLS; p++) hl[a][p] = 'hl'; }
+        }
+        return hl;
+      }
+    }
+  };
+
+  function renderInstrument() {
+    const B = currentBase;
+    const N = B - 1;
+    const grid = buildGrid(B);
+
+    document.getElementById('modLabel').textContent = N;
+
+    let hl;
+    if (currentPattern && patternDefs[currentPattern]) {
+      hl = patternDefs[currentPattern].fn(grid, N);
+      document.getElementById('patternDesc').innerHTML = patternDefs[currentPattern].desc;
+    } else {
+      hl = emptyHL(grid);
+      for (let a = 0; a < N; a++) {
+        for (let p = 0; p < COLS; p++) {
+          if (grid[a][p] === grid[a][0] && p > 0) hl[a][p] = 'fixed-point';
+          else if (grid[a][p] === N && (a + 1) !== N) hl[a][p] = 'attractor';
+        }
+      }
+      document.getElementById('patternDesc').innerHTML = 'Select a pattern above to discover structure in the tile. Each cell shows <span class="accent">dr(bᵖ)</span> — the digital root of b raised to the p-th power.';
+    }
+
+    let html = '<thead><tr><th>Base</th>';
+    for (let p = 1; p <= COLS; p++) html += '<th>^' + p + '</th>';
+    html += '</tr></thead><tbody>';
+    for (let a = 0; a < N; a++) {
+      html += '<tr><td>' + (a + 1) + '</td>';
+      for (let p = 0; p < COLS; p++) {
+        html += '<td class="' + hl[a][p] + '">' + grid[a][p] + '</td>';
       }
       html += '</tr>';
     }
@@ -1324,11 +1738,27 @@
     btn.addEventListener('click', () => {
       document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderGrid(parseInt(btn.dataset.base, 10));
+      currentBase = parseInt(btn.dataset.base, 10);
+      renderInstrument();
     });
   });
 
-  renderGrid(10);
+  document.querySelectorAll('.pat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pat = btn.dataset.pat;
+      if (currentPattern === pat) {
+        currentPattern = null;
+        btn.classList.remove('active');
+      } else {
+        document.querySelectorAll('.pat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentPattern = pat;
+      }
+      renderInstrument();
+    });
+  });
+
+  renderInstrument();
 </script>
 
 </body>
