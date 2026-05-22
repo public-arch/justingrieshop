@@ -1400,9 +1400,13 @@
   function emptyHL(grid) { return grid.map(r => r.map(() => '')); }
 
   function getCycleLen(row) {
-    const start = row[0];
-    for (let i = 1; i < row.length; i++) {
-      if (row[i] === start) return i;
+    // Find the repeating period of the sequence (not just when the first value recurs)
+    for (let period = 1; period <= row.length; period++) {
+      let ok = true;
+      for (let i = period; i < row.length; i++) {
+        if (row[i] !== row[i % period]) { ok = false; break; }
+      }
+      if (ok) return period;
     }
     return row.length;
   }
@@ -1447,9 +1451,13 @@
         for (let a = 1; a <= N; a++) {
           if (paired.has(a)) continue;
           const b = N - a;
-          if (b < 1 || b > N || b === a) continue;
+          if (b < 1 || b > N) continue;
           const c = colors[ci % colors.length]; ci++;
-          for (let p = 0; p < COLS; p++) { hl[a - 1][p] = c; hl[b - 1][p] = c; }
+          if (b === a) {
+            for (let p = 0; p < COLS; p++) hl[a - 1][p] = c;
+          } else {
+            for (let p = 0; p < COLS; p++) { hl[a - 1][p] = c; hl[b - 1][p] = c; }
+          }
           paired.add(a); paired.add(b);
         }
         for (let a = 1; a <= N; a++) {
@@ -1475,14 +1483,29 @@
       }
     },
     'cycle-lengths': {
-      desc: 'Each row colored by how many powers until it returns to its starting digit. <span class="accent">Gold</span> = 1, <span class="accent" style="color:#8bb8e8">blue</span> = 2, <span class="accent" style="color:#56d364">green</span> = 3, <span class="accent" style="color:#c88bd4">purple</span> = 4, <span class="accent" style="color:#d4956c">orange</span> = 6.',
+      desc: 'Each row colored by its orbit period. <span class="accent">Gold</span> = 1, <span class="accent" style="color:#8bb8e8">blue</span> = 2, <span class="accent" style="color:#56d364">green</span> = 3, <span class="accent" style="color:#c88bd4">purple</span> = 4, <span class="accent" style="color:#d4956c">orange</span> = 6. Dimmed prefix = transient before the cycle locks in.',
       fn(grid, N) {
         const hl = emptyHL(grid);
         const cm = { 1: 'hl-cycle-1', 2: 'hl-cycle-2', 3: 'hl-cycle-3', 4: 'hl-cycle-4', 6: 'hl-cycle-6' };
         for (let a = 0; a < N; a++) {
-          const len = getCycleLen(grid[a]);
-          const cls = cm[len] || 'hl-cycle-other';
-          for (let p = 0; p < COLS; p++) hl[a][p] = cls;
+          let found = false;
+          for (let s = 0; s < COLS - 1 && !found; s++) {
+            for (let per = 1; per <= COLS - s; per++) {
+              let ok = true;
+              for (let i = s + per; i < COLS; i++) {
+                if (grid[a][i] !== grid[a][s + (i - s) % per]) { ok = false; break; }
+              }
+              if (ok && (COLS - s) >= per * 2) {
+                const cls = cm[per] || 'hl-cycle-other';
+                for (let p = 0; p < COLS; p++) hl[a][p] = p < s ? 'hl-dim' : cls;
+                found = true;
+                break;
+              }
+            }
+          }
+          if (!found) {
+            for (let p = 0; p < COLS; p++) hl[a][p] = 'hl-cycle-other';
+          }
         }
         return hl;
       }
@@ -1500,13 +1523,19 @@
       }
     },
     'frequent': {
-      desc: 'The most frequently appearing value in each row, highlighted. Reveals which digits <span class="accent">dominate</span> each row\'s orbit.',
+      desc: 'The most frequently appearing value in each row, highlighted. Reveals which digits <span class="accent">dominate</span> each row\'s orbit. Rows with uniform distribution are dimmed.',
       fn(grid, N) {
         const hl = emptyHL(grid);
         for (let a = 0; a < N; a++) {
           const freq = {};
           grid[a].forEach(v => { freq[v] = (freq[v] || 0) + 1; });
-          const maxF = Math.max(...Object.values(freq));
+          const counts = Object.values(freq);
+          const maxF = Math.max(...counts);
+          const minF = Math.min(...counts);
+          if (maxF === minF) {
+            for (let p = 0; p < COLS; p++) hl[a][p] = 'hl-dim';
+            continue;
+          }
           const doms = Object.keys(freq).filter(k => freq[k] === maxF).map(Number);
           for (let p = 0; p < COLS; p++) {
             if (doms.includes(grid[a][p])) hl[a][p] = 'hl';
@@ -1546,23 +1575,32 @@
       }
     },
     'div-mirrors': {
-      desc: 'Column pairs where values read <span class="accent">top-to-bottom</span> in one match <span class="accent">bottom-to-top</span> in the other — vertical reflections.',
+      desc: 'Columns that are <span class="accent">vertical palindromes</span> (self-mirrored) or pairs where one reads top-to-bottom what the other reads bottom-to-top.',
       fn(grid, N) {
         const hl = emptyHL(grid);
         const cols = [];
         for (let p = 0; p < COLS; p++) cols.push(grid.map(r => r[p]));
-        const paired = new Set();
+        const marked = new Set();
         const colors = ['hl-a', 'hl-b', 'hl-c', 'hl-d'];
         let ci = 0;
+        // Check self-palindromes first
         for (let i = 0; i < COLS; i++) {
-          if (paired.has(i)) continue;
+          const rev = [...cols[i]].reverse();
+          if (cols[i].every((v, k) => v === rev[k])) {
+            for (let a = 0; a < N; a++) hl[a][i] = 'hl';
+            marked.add(i);
+          }
+        }
+        // Then cross-pairs
+        for (let i = 0; i < COLS; i++) {
+          if (marked.has(i)) continue;
           const rev = [...cols[i]].reverse();
           for (let j = i + 1; j < COLS; j++) {
-            if (paired.has(j)) continue;
+            if (marked.has(j)) continue;
             if (cols[j].every((v, k) => v === rev[k])) {
               const c = colors[ci % colors.length]; ci++;
               for (let a = 0; a < N; a++) { hl[a][i] = c; hl[a][j] = c; }
-              paired.add(i); paired.add(j); break;
+              marked.add(i); marked.add(j); break;
             }
           }
         }
@@ -1570,20 +1608,19 @@
       }
     },
     'col-tiling': {
-      desc: 'Columns whose values repeat with a <span class="accent">short period</span>. Shorter tiles indicate deeper structural regularity in the power position.',
+      desc: 'Columns whose values repeat with a <span class="accent">short period</span> (&lt; N). Gold = period 1–2, amber = period 3, blue = period 4+.',
       fn(grid, N) {
         const hl = emptyHL(grid);
-        const cols = [];
-        for (let p = 0; p < COLS; p++) cols.push(grid.map(r => r[p]));
         for (let p = 0; p < COLS; p++) {
-          const col = cols[p];
-          for (let period = 1; period <= Math.floor(N / 2); period++) {
+          const col = grid.map(r => r[p]);
+          for (let period = 1; period < N; period++) {
             let tiles = true;
             for (let i = period; i < N; i++) {
               if (col[i] !== col[i % period]) { tiles = false; break; }
             }
-            if (tiles && period < N) {
-              hl.forEach((row, a) => { row[p] = period <= 2 ? 'hl' : period <= 3 ? 'hl-a' : 'hl-b'; });
+            if (tiles) {
+              const cls = period <= 2 ? 'hl' : period <= 3 ? 'hl-a' : 'hl-b';
+              for (let a = 0; a < N; a++) hl[a][p] = cls;
               break;
             }
           }
@@ -1641,6 +1678,12 @@
           if (paired.has(i)) continue;
           for (let j = i + 1; j < COLS; j++) {
             if (paired.has(j)) continue;
+            // Check if same column (skip — handled by col-identical)
+            let same = true;
+            for (let k = 0; k < N; k++) {
+              if (cols[i][k] !== cols[j][k]) { same = false; break; }
+            }
+            if (same) continue;
             const target = cols[i][0] + cols[j][0];
             let match = true;
             for (let k = 1; k < N; k++) {
@@ -1657,19 +1700,21 @@
       }
     },
     'col-progressions': {
-      desc: 'Columns containing an <span class="accent">arithmetic progression</span> — values increasing by a constant step mod (B−1).',
+      desc: 'Columns containing an <span class="accent">arithmetic progression</span> — values changing by a constant step mod (B−1). Gold = non-trivial step, blue = constant (step 0).',
       fn(grid, N) {
         const hl = emptyHL(grid);
         if (N < 3) return hl;
         for (let p = 0; p < COLS; p++) {
           const col = grid.map(r => r[p]);
           const diff = ((col[1] - col[0]) % N + N) % N;
-          if (diff === 0) continue;
           let isAP = true;
           for (let i = 2; i < N; i++) {
             if (((col[i] - col[i - 1]) % N + N) % N !== diff) { isAP = false; break; }
           }
-          if (isAP) { for (let a = 0; a < N; a++) hl[a][p] = 'hl'; }
+          if (isAP) {
+            const cls = diff === 0 ? 'hl-b' : 'hl';
+            for (let a = 0; a < N; a++) hl[a][p] = cls;
+          }
         }
         return hl;
       }
